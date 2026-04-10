@@ -997,17 +997,6 @@ function resetButton() {
   btnIcon.style.display = '';
 }
 
-// ── CHECK IF RETURNING FROM SUCCESSFUL SUBMISSION ──
-if (window.location.search.indexOf('submitted=true') !== -1) {
-  form.style.display = 'none';
-  document.getElementById('progressWrap').style.display = 'none';
-  document.getElementById('thankyou').classList.add('show');
-  // Clean the URL so refreshing doesn't re-show thank you
-  if (window.history && window.history.replaceState) {
-    window.history.replaceState({}, '', window.location.pathname);
-  }
-}
-
 // ── SUBMIT HANDLER ──
 form.addEventListener('submit', function(e) {
   e.preventDefault();
@@ -1022,18 +1011,25 @@ form.addEventListener('submit', function(e) {
   btnText.innerHTML = '<span class="spinner"></span> Submitting\u2026';
   btnIcon.style.display = 'none';
 
-  // Build the redirect URL (come back to this page with ?submitted=true)
-  var currentPage = window.location.origin + window.location.pathname;
-  var redirectURL = currentPage + '?submitted=true';
-
-  // Navigate directly to the Apps Script (same as pasting URL in browser)
-  // The script saves the data then redirects back here
+  // ── ANONYMOUS BACKGROUND SUBMISSION ──
+  // Sends data silently — respondent never interacts with Google
   var jsonStr = JSON.stringify(data);
-  var targetURL = GOOGLE_SCRIPT_URL
-    + '?data=' + encodeURIComponent(jsonStr)
-    + '&redirect=' + encodeURIComponent(redirectURL);
+  var getURL = GOOGLE_SCRIPT_URL + '?data=' + encodeURIComponent(jsonStr);
 
-  window.location.href = targetURL;
+  // Fire the GET request via hidden iframe (same request as the browser test)
+  var iframe = document.createElement('iframe');
+  iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;';
+  iframe.src = getURL;
+  document.body.appendChild(iframe);
+
+  // Also fire via Image (backup)
+  (new Image()).src = getURL + '&t=' + Date.now();
+
+  // Show thank you after giving the request time to complete
+  setTimeout(function() {
+    showThankYou();
+    try { document.body.removeChild(iframe); } catch(ex) {}
+  }, 2500);
 });
 </script>
 </body>
