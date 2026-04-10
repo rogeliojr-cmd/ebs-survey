@@ -1006,35 +1006,46 @@ form.addEventListener('submit', function(e) {
 
   var data = collectData();
 
-  // If URL not configured, demo mode
-  if (GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyWVTDrDfEKuXVGwiKbl87dE24qDV5uUZIPC2FF6lDYBxI-29eKBCNkaBNp6B6urAxZ/exec') {
-    console.log('EBS Survey (demo mode):', JSON.stringify(data, null, 2));
-    showThankYou();
-    return;
-  }
-
   // Show loading
   submitBtn.disabled = true;
   btnText.innerHTML = '<span class="spinner"></span> Submitting\u2026';
   btnIcon.style.display = 'none';
 
-  // Send to Google Sheets via GET (most reliable with Apps Script)
-  var params = encodeURIComponent(JSON.stringify(data));
-  var url = GOOGLE_SCRIPT_URL + '?data=' + params;
+  // ── HIDDEN IFRAME + FORM METHOD ──
+  // This bypasses ALL CORS restrictions — form submissions are never blocked.
 
-  // Try GET with a script tag injection (works cross-origin without CORS issues)
-  var img = new Image();
-  img.onload = img.onerror = function() {
+  // 1. Create hidden iframe to receive the response
+  var iframeName = 'ebsSubmitFrame' + Date.now();
+  var iframe = document.createElement('iframe');
+  iframe.name = iframeName;
+  iframe.style.display = 'none';
+  document.body.appendChild(iframe);
+
+  // 2. Create a hidden form targeting the iframe
+  var hiddenForm = document.createElement('form');
+  hiddenForm.method = 'POST';
+  hiddenForm.action = GOOGLE_SCRIPT_URL;
+  hiddenForm.target = iframeName;
+  hiddenForm.style.display = 'none';
+
+  // 3. Add the survey data as a hidden input
+  var input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'data';
+  input.value = JSON.stringify(data);
+  hiddenForm.appendChild(input);
+
+  // 4. Submit the form
+  document.body.appendChild(hiddenForm);
+  hiddenForm.submit();
+
+  // 5. Show thank you after a short delay (form submitted to iframe)
+  setTimeout(function() {
     showThankYou();
-  };
-  img.src = url;
-
-  // Also try fetch as backup
-  fetch(GOOGLE_SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    body: JSON.stringify(data)
-  }).catch(function() {});
+    // Clean up
+    try { document.body.removeChild(iframe); } catch(e) {}
+    try { document.body.removeChild(hiddenForm); } catch(e) {}
+  }, 2000);
 });
 </script>
 </body>
