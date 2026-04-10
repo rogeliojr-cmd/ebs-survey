@@ -997,6 +997,17 @@ function resetButton() {
   btnIcon.style.display = '';
 }
 
+// ── CHECK IF RETURNING FROM SUCCESSFUL SUBMISSION ──
+if (window.location.search.indexOf('submitted=true') !== -1) {
+  form.style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('thankyou').classList.add('show');
+  // Clean the URL so refreshing doesn't re-show thank you
+  if (window.history && window.history.replaceState) {
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+}
+
 // ── SUBMIT HANDLER ──
 form.addEventListener('submit', function(e) {
   e.preventDefault();
@@ -1011,41 +1022,18 @@ form.addEventListener('submit', function(e) {
   btnText.innerHTML = '<span class="spinner"></span> Submitting\u2026';
   btnIcon.style.display = 'none';
 
-  // ── HIDDEN IFRAME + FORM METHOD ──
-  // This bypasses ALL CORS restrictions — form submissions are never blocked.
+  // Build the redirect URL (come back to this page with ?submitted=true)
+  var currentPage = window.location.origin + window.location.pathname;
+  var redirectURL = currentPage + '?submitted=true';
 
-  // 1. Create hidden iframe to receive the response
-  var iframeName = 'ebsSubmitFrame' + Date.now();
-  var iframe = document.createElement('iframe');
-  iframe.name = iframeName;
-  iframe.style.display = 'none';
-  document.body.appendChild(iframe);
+  // Navigate directly to the Apps Script (same as pasting URL in browser)
+  // The script saves the data then redirects back here
+  var jsonStr = JSON.stringify(data);
+  var targetURL = GOOGLE_SCRIPT_URL
+    + '?data=' + encodeURIComponent(jsonStr)
+    + '&redirect=' + encodeURIComponent(redirectURL);
 
-  // 2. Create a hidden form targeting the iframe
-  var hiddenForm = document.createElement('form');
-  hiddenForm.method = 'POST';
-  hiddenForm.action = GOOGLE_SCRIPT_URL;
-  hiddenForm.target = iframeName;
-  hiddenForm.style.display = 'none';
-
-  // 3. Add the survey data as a hidden input
-  var input = document.createElement('input');
-  input.type = 'hidden';
-  input.name = 'data';
-  input.value = JSON.stringify(data);
-  hiddenForm.appendChild(input);
-
-  // 4. Submit the form
-  document.body.appendChild(hiddenForm);
-  hiddenForm.submit();
-
-  // 5. Show thank you after a short delay (form submitted to iframe)
-  setTimeout(function() {
-    showThankYou();
-    // Clean up
-    try { document.body.removeChild(iframe); } catch(e) {}
-    try { document.body.removeChild(hiddenForm); } catch(e) {}
-  }, 2000);
+  window.location.href = targetURL;
 });
 </script>
 </body>
