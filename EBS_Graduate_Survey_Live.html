@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Eaton Business School — Graduate Satisfaction Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--navy:#0B1D3A;
+--navy-light:#132C54;
+--gold:#C8A84E;
+--gold-light:#E8D59A;
+--cream:#FAF7F0;
+--white:#FFFFFF;
+--text:#2C2C2C;
+--text-light:#6B7280;
+--border:#E2E0DB;
+--green:#1B7A4A;
+--red:#C0392B;
+--section-bg:#F5F2EB;
+}
+html{scroll-behavior:smooth}
+body{
+font-family:'Source Sans 3',sans-serif;
+background:var(--cream);
+color:var(--text);
+line-height:1.6;
+-webkit-font-smoothing:antialiased;
+-webkit-tap-highlight-color:transparent;
+}
+
+/* ── HEADER ── */
+.survey-header{
+background:var(--navy);
+padding:2.5rem 1.5rem 2rem;
+text-align:center;
+position:relative;
+overflow:hidden;
+}
+.survey-header::before{
+content:'';
+position:absolute;inset:0;
+background:
+  radial-gradient(ellipse 80% 60% at 20% 80%, rgba(200,168,78,.12) 0%, transparent 60%),
+  radial-gradient(ellipse 60% 50% at 80% 20%, rgba(200,168,78,.08) 0%, transparent 50%);
+}
+.header-inner{position:relative;z-index:1;max-width:680px;margin:0 auto}
+.ebs-logo{
+font-family:'Playfair Display',serif;
+font-size:1.1rem;
+letter-spacing:.25em;
+text-transform:uppercase;
+color:var(--gold);
+margin-bottom:.3rem;
+}
+.ebs-logo-sub{
+font-size:.7rem;
+letter-spacing:.35em;
+text-transform:uppercase;
+color:rgba(255,255,255,.45);
+margin-bottom:1.6rem;
+}
+.header-title{
+font-family:'Playfair Display',serif;
+font-size:clamp(1.5rem,4vw,2.2rem);
+color:var(--white);
+font-weight:600;
+margin-bottom:.5rem;
+line-height:1.25;
+}
+.header-sub{
+color:rgba(255,255,255,.6);
+font-size:.92rem;
+font-weight:300;
+max-width:520px;
+margin:0 auto;
+}
+.header-badge{
+display:inline-block;
+margin-top:1.2rem;
+background:rgba(200,168,78,.15);
+border:1px solid rgba(200,168,78,.3);
+color:var(--gold-light);
+font-size:.72rem;
+letter-spacing:.12em;
+text-transform:uppercase;
+padding:.35rem 1rem;
+border-radius:20px;
+}
+
+/* ── PROGRESS ── */
+.progress-wrap{
+position:sticky;top:0;z-index:100;
+background:var(--white);
+border-bottom:1px solid var(--border);
+padding:.6rem 1.5rem;
+}
+.progress-inner{max-width:680px;margin:0 auto;display:flex;align-items:center;gap:.8rem}
+.progress-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:3px;transition:width .4s ease}
+.progress-label{font-size:.75rem;color:var(--text-light);min-width:3rem;text-align:right;font-weight:500}
+
+/* ── FORM CONTAINER ── */
+.survey-body{max-width:720px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+
+/* ── SECTIONS ── */
+.section{
+margin-bottom:2rem;
+background:var(--white);
+border-radius:12px;
+border:1px solid var(--border);
+overflow:hidden;
+opacity:0;
+transform:translateY(16px);
+animation:fadeUp .5s ease forwards;
+}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+.section:nth-child(2){animation-delay:.05s}
+.section:nth-child(3){animation-delay:.1s}
+.section:nth-child(4){animation-delay:.15s}
+.section:nth-child(5){animation-delay:.2s}
+.section:nth-child(6){animation-delay:.25s}
+
+.section-head{
+background:var(--navy);
+padding:1rem 1.5rem;
+display:flex;align-items:center;gap:.7rem;
+}
+.section-num{
+font-family:'Playfair Display',serif;
+font-size:.8rem;
+color:var(--gold);
+background:rgba(200,168,78,.15);
+width:28px;height:28px;
+display:flex;align-items:center;justify-content:center;
+border-radius:50%;
+font-weight:600;
+flex-shrink:0;
+}
+.section-title{
+font-family:'Playfair Display',serif;
+font-size:1.05rem;
+color:var(--white);
+font-weight:600;
+}
+.section-body{padding:1.5rem}
+
+/* ── QUESTIONS ── */
+.question{margin-bottom:1.8rem}
+.question:last-child{margin-bottom:0}
+.q-label{
+font-size:.92rem;
+font-weight:500;
+margin-bottom:.7rem;
+color:var(--text);
+line-height:1.5;
+}
+.q-num{
+display:inline-block;
+font-size:.72rem;
+font-weight:600;
+color:var(--gold);
+background:rgba(200,168,78,.1);
+padding:.15rem .5rem;
+border-radius:4px;
+margin-right:.4rem;
+vertical-align:middle;
+}
+.q-required{color:var(--red);margin-left:.2rem}
+
+/* ── RADIO PILLS (single select) ── */
+.radio-group{display:flex;flex-wrap:wrap;gap:.5rem}
+.radio-pill{position:relative}
+.radio-pill input{position:absolute;opacity:0;width:0;height:0}
+.radio-pill label{
+display:block;
+padding:.5rem 1rem;
+border:1px solid var(--border);
+border-radius:8px;
+font-size:.85rem;
+cursor:pointer;
+transition:all .2s ease;
+color:var(--text-light);
+user-select:none;
+}
+.radio-pill input:checked+label{
+border-color:var(--gold);
+background:rgba(200,168,78,.08);
+color:var(--navy);
+font-weight:500;
+box-shadow:0 0 0 1px var(--gold);
+}
+.radio-pill label:hover{border-color:var(--gold-light);background:rgba(200,168,78,.04)}
+.radio-pill label:active{transform:scale(.97)}
+
+/* ── CHECKBOX PILLS ── */
+.check-group{display:flex;flex-wrap:wrap;gap:.5rem}
+.check-pill{position:relative}
+.check-pill input{position:absolute;opacity:0;width:0;height:0}
+.check-pill label{
+display:block;
+padding:.5rem 1rem;
+border:1px solid var(--border);
+border-radius:8px;
+font-size:.85rem;
+cursor:pointer;
+transition:all .2s ease;
+color:var(--text-light);
+user-select:none;
+}
+.check-pill input:checked+label{
+border-color:var(--navy);
+background:rgba(11,29,58,.06);
+color:var(--navy);
+font-weight:500;
+box-shadow:0 0 0 1px var(--navy);
+}
+.check-pill label:hover{border-color:var(--navy-light);background:rgba(11,29,58,.03)}
+.check-pill label:active{transform:scale(.97)}
+
+/* ── LIKERT SCALE ── */
+.likert{display:flex;gap:.4rem;align-items:stretch}
+.likert-opt{flex:1;position:relative;text-align:center}
+.likert-opt input{position:absolute;opacity:0;width:0;height:0}
+.likert-opt label{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+padding:.6rem .3rem;
+border:1px solid var(--border);
+border-radius:10px;
+cursor:pointer;
+transition:all .2s ease;
+min-height:56px;
+user-select:none;
+}
+.likert-num{font-size:1.1rem;font-weight:600;color:var(--text-light);transition:color .2s}
+.likert-label{font-size:.6rem;color:var(--text-light);margin-top:.15rem;line-height:1.2;transition:color .2s}
+.likert-opt input:checked+label{
+border-color:var(--gold);
+background:var(--gold);
+box-shadow:0 2px 8px rgba(200,168,78,.3);
+}
+.likert-opt input:checked+label .likert-num{color:var(--navy)}
+.likert-opt input:checked+label .likert-label{color:var(--navy)}
+.likert-opt label:hover{border-color:var(--gold-light);background:rgba(200,168,78,.05)}
+.likert-opt label:active{transform:scale(.93)}
+
+/* ── NPS ── */
+.nps-row{display:flex;gap:.3rem}
+.nps-opt{flex:1;position:relative;text-align:center}
+.nps-opt input{position:absolute;opacity:0;width:0;height:0}
+.nps-opt label{
+display:flex;align-items:center;justify-content:center;
+height:44px;
+border:1px solid var(--border);
+border-radius:8px;
+font-size:.95rem;font-weight:600;
+color:var(--text-light);
+cursor:pointer;
+transition:all .2s ease;
+user-select:none;
+}
+.nps-opt input:checked+label{
+border-color:var(--navy);
+background:var(--navy);
+color:var(--gold);
+box-shadow:0 2px 8px rgba(11,29,58,.25);
+}
+.nps-opt label:hover{border-color:var(--navy-light);background:rgba(11,29,58,.04)}
+.nps-opt label:active{transform:scale(.93)}
+.nps-anchors{display:flex;justify-content:space-between;margin-top:.4rem}
+.nps-anchors span{font-size:.65rem;color:var(--text-light)}
+
+/* ── TEXT INPUT / TEXTAREA ── */
+.text-input{
+width:100%;
+padding:.7rem 1rem;
+border:1px solid var(--border);
+border-radius:8px;
+font-family:'Source Sans 3',sans-serif;
+font-size:16px; /* Prevents iOS zoom */
+color:var(--text);
+transition:border-color .2s;
+background:var(--white);
+resize:vertical;
+-webkit-appearance:none;
+}
+.text-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,168,78,.12)}
+.text-input::placeholder{color:#B0ADA6}
+
+/* ── SUBMIT ── */
+.submit-wrap{text-align:center;margin-top:2rem}
+.submit-btn{
+display:inline-flex;align-items:center;gap:.6rem;
+background:var(--navy);
+color:var(--gold);
+border:none;
+padding:.9rem 2.5rem;
+font-family:'Source Sans 3',sans-serif;
+font-size:1rem;
+font-weight:600;
+letter-spacing:.04em;
+border-radius:10px;
+cursor:pointer;
+transition:all .25s ease;
+position:relative;
+overflow:hidden;
+min-width:200px;
+justify-content:center;
+}
+.submit-btn:hover{background:var(--navy-light);transform:translateY(-1px);box-shadow:0 4px 16px rgba(11,29,58,.3)}
+.submit-btn:active{transform:translateY(0)}
+.submit-btn svg{width:18px;height:18px;fill:var(--gold)}
+.submit-btn:disabled{opacity:.7;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+
+/* ── SPINNER ── */
+.spinner{
+display:inline-block;
+width:18px;height:18px;
+border:2px solid rgba(200,168,78,.3);
+border-top-color:var(--gold);
+border-radius:50%;
+animation:spin .6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── STATUS MESSAGE ── */
+.status-msg{
+text-align:center;
+margin-top:1rem;
+font-size:.88rem;
+padding:.6rem 1rem;
+border-radius:8px;
+animation:fadeUp .3s ease;
+}
+.status-msg.error{
+background:rgba(192,57,43,.08);
+color:var(--red);
+border:1px solid rgba(192,57,43,.2);
+}
+.status-msg.success{
+background:rgba(27,122,74,.08);
+color:var(--green);
+border:1px solid rgba(27,122,74,.2);
+}
+
+/* ── THANK YOU ── */
+.thankyou{
+display:none;
+text-align:center;
+padding:4rem 2rem;
+max-width:520px;
+margin:3rem auto;
+background:var(--white);
+border-radius:16px;
+border:1px solid var(--border);
+}
+.thankyou.show{display:block;animation:fadeUp .6s ease}
+.thankyou-icon{
+font-size:3rem;
+margin-bottom:1rem;
+width:72px;height:72px;
+background:linear-gradient(135deg,var(--gold),var(--gold-light));
+color:var(--navy);
+border-radius:50%;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 4px 20px rgba(200,168,78,.3);
+}
+.thankyou h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:.5rem}
+.thankyou p{color:var(--text-light);font-size:.95rem}
+
+/* ── CONSENT ── */
+.consent-box{
+display:flex;align-items:flex-start;gap:.7rem;
+background:var(--section-bg);
+padding:1rem 1.2rem;
+border-radius:10px;
+margin-top:.5rem;
+}
+.consent-box input[type=checkbox]{
+margin-top:.2rem;
+width:18px;height:18px;
+accent-color:var(--navy);
+flex-shrink:0;
+min-width:18px;
+}
+.consent-text{font-size:.82rem;color:var(--text-light);line-height:1.5;cursor:pointer}
+
+/* ── VALIDATION FLASH ── */
+.question.flash-error{
+animation:flashWarn .5s ease;
+}
+@keyframes flashWarn{
+0%,100%{background:transparent}
+50%{background:rgba(192,57,43,.06)}
+}
+.question.flash-error .q-label{color:var(--red)}
+
+/* ══════════════════════════════════════
+   RESPONSIVE — MOBILE FIRST ENHANCEMENTS
+   ══════════════════════════════════════ */
+
+@media(max-width:600px){
+  .survey-header{padding:2rem 1.2rem 1.5rem}
+  .header-sub{font-size:.84rem}
+
+  .progress-wrap{padding:.5rem 1rem}
+
+  .survey-body{padding:1rem 1rem 3rem}
+
+  .section{margin-bottom:1.4rem;border-radius:10px}
+  .section-head{padding:.8rem 1rem}
+  .section-title{font-size:.95rem}
+  .section-body{padding:1rem}
+
+  .question{margin-bottom:1.5rem}
+  .q-label{font-size:.88rem;margin-bottom:.6rem}
+
+  /* Radio & Checkbox pills — full width stacking on small screens */
+  .radio-group,.check-group{gap:.4rem}
+  .radio-pill,.check-pill{width:100%}
+  .radio-pill label,.check-pill label{
+    font-size:.84rem;
+    padding:.6rem .9rem;
+    text-align:center;
+  }
+
+  /* Likert — numbers only, compact */
+  .likert{gap:.25rem}
+  .likert-opt label{padding:.5rem .15rem;min-height:50px;border-radius:8px}
+  .likert-label{display:none}
+
+  /* NPS — 2 rows of 5+6 */
+  .nps-row{flex-wrap:wrap;gap:.3rem}
+  .nps-opt{flex:0 0 calc(20% - .25rem)}
+  .nps-opt label{height:42px;font-size:.88rem;border-radius:6px}
+  .nps-anchors{margin-top:.3rem}
+  .nps-anchors span{font-size:.62rem}
+
+  .text-input{padding:.65rem .85rem;font-size:16px}
+
+  .submit-btn{
+    width:100%;
+    padding:1rem;
+    font-size:1.05rem;
+    border-radius:12px;
+  }
+
+  .consent-box{padding:.85rem 1rem}
+  .consent-text{font-size:.78rem}
+
+  .thankyou{margin:2rem 1rem;padding:3rem 1.5rem}
+  .thankyou h2{font-size:1.4rem}
+}
+
+/* Tiny phones (iPhone SE, etc.) */
+@media(max-width:380px){
+  .survey-header{padding:1.5rem 1rem 1.2rem}
+  .ebs-logo{font-size:.95rem}
+  .header-title{font-size:1.3rem}
+  .header-badge{font-size:.65rem;padding:.3rem .8rem}
+  .section-body{padding:.85rem}
+  .nps-opt{flex:0 0 calc(20% - .2rem)}
+  .nps-opt label{height:38px;font-size:.82rem}
+  .likert-opt label{min-height:44px}
+  .likert-num{font-size:1rem}
+}
+
+/* Landscape phones */
+@media(max-width:800px) and (orientation:landscape){
+  .survey-header{padding:1.5rem 1.5rem 1rem}
+  .radio-pill,.check-pill{width:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="survey-header">
+<div class="header-inner">
+<div class="ebs-logo">Eaton Business School</div>
+<div class="ebs-logo-sub">Westford Education Group</div>
+<div class="header-title">Graduate Satisfaction Survey</div>
+<div class="header-sub">Your feedback shapes the future of EBS. This survey takes approximately 8 minutes and all responses are strictly anonymous.</div>
+<div class="header-badge">Rome Graduation — April 2026</div>
+</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+<div class="progress-inner">
+<div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+<div class="progress-label" id="progressLabel">0%</div>
+</div>
+</div>
+
+<!-- FORM -->
+<form class="survey-body" id="surveyForm" onsubmit="return handleSubmit(event)" novalidate>
+
+<!-- SECTION 1 -->
+<div class="section">
+<div class="section-head"><div class="section-num">1</div><div class="section-title">Programme Profile</div></div>
+<div class="section-body">
+
+<div class="question" data-q="q1">
+<div class="q-label"><span class="q-num">Q1</span>Which programme did you complete?<span class="q-required">*</span></div>
+<div class="radio-group">
+<div class="radio-pill"><input type="radio" name="q1" id="q1a" value="DBA" required><label for="q1a">Doctor of Business Administration (DBA)</label></div>
+<div class="radio-pill"><input type="radio" name="q1" id="q1b" value="EMBA"><label for="q1b">Executive MBA (EMBA)</label></div>
+<div class="radio-pill"><input type="radio" name="q1" id="q1c" value="MBA"><label for="q1c">MBA</label></div>
+<div class="radio-pill"><input type="radio" name="q1" id="q1d" value="Masters"><label for="q1d">Masters</label></div>
+<div class="radio-pill"><input type="radio" name="q1" id="q1e" value="PGD/PD"><label for="q1e">PGD / Professional Diploma</label></div>
+<div class="radio-pill"><input type="radio" name="q1" id="q1f" value="Diploma"><label for="q1f">Extended Diploma / Diploma</label></div>
+<div class="radio-pill"><input type="radio" name="q1" id="q1g" value="Certification"><label for="q1g">Certification</label></div>
+</div>
+</div>
+
+<div class="question" data-q="q2">
+<div class="q-label"><span class="q-num">Q2</span>Which university partner awarded your qualification?<span class="q-required">*</span></div>
+<div class="radio-group">
+<div class="radio-pill"><input type="radio" name="q2" id="q2a" value="UniMarconi" required><label for="q2a">Guglielmo Marconi University</label></div>
+<div class="radio-pill"><input type="radio" name="q2" id="q2b" value="Acacia"><label for="q2b">Acacia University</label></div>
+<div class="radio-pill"><input type="radio" name="q2" id="q2c" value="Gloucestershire"><label for="q2c">University of Gloucestershire</label></div>
+<div class="radio-pill"><input type="radio" name="q2" id="q2d" value="CIQ"><label for="q2d">Cambridge International Qualifications</label></div>
+<div class="radio-pill"><input type="radio" name="q2" id="q2e" value="SQA"><label for="q2e">Scottish Qualifications Authority</label></div>
+</div>
+</div>
+
+<div class="question" data-q="q3">
+<div class="q-label"><span class="q-num">Q3</span>What is your country of residence?<span class="q-required">*</span></div>
+<input type="text" name="q3" class="text-input" placeholder="e.g. United Arab Emirates" required>
+</div>
+
+<div class="question" data-q="q4">
+<div class="q-label"><span class="q-num">Q4</span>What was your primary motivation for enrolling at EBS?<span class="q-required">*</span></div>
+<div class="radio-group">
+<div class="radio-pill"><input type="radio" name="q4" id="q4a" value="Career advancement" required><label for="q4a">Career advancement or promotion</label></div>
+<div class="radio-pill"><input type="radio" name="q4" id="q4b" value="Knowledge"><label for="q4b">Knowledge and skills development</label></div>
+<div class="radio-pill"><input type="radio" name="q4" id="q4c" value="Credential"><label for="q4c">International credential recognition</label></div>
+<div class="radio-pill"><input type="radio" name="q4" id="q4d" value="Networking"><label for="q4d">Professional networking</label></div>
+<div class="radio-pill"><input type="radio" name="q4" id="q4e" value="Career change"><label for="q4e">Career transition or change</label></div>
+</div>
+</div>
+
+<div class="question" data-q="q5">
+<div class="q-label"><span class="q-num">Q5</span>How did you first hear about EBS?<span class="q-required">*</span></div>
+<div class="radio-group">
+<div class="radio-pill"><input type="radio" name="q5" id="q5a" value="Referral" required><label for="q5a">Referral from colleague or alumni</label></div>
+<div class="radio-pill"><input type="radio" name="q5" id="q5b" value="Search"><label for="q5b">Online search</label></div>
+<div class="radio-pill"><input type="radio" name="q5" id="q5c" value="Social media"><label for="q5c">Social media</label></div>
+<div class="radio-pill"><input type="radio" name="q5" id="q5d" value="EBS rep"><label for="q5d">EBS representative</label></div>
+<div class="radio-pill"><input type="radio" name="q5" id="q5e" value="Employer"><label for="q5e">Employer / corporate sponsorship</label></div>
+<div class="radio-pill"><input type="radio" name="q5" id="q5f" value="Other"><label for="q5f">Other</label></div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section">
+<div class="section-head"><div class="section-num">2</div><div class="section-title">Academic Quality &amp; Curriculum</div></div>
+<div class="section-body">
+
+<div class="question" data-q="q6">
+<div class="q-label"><span class="q-num">Q6</span>Relevance of the curriculum to real-world business challenges.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q6" id="q6_1" value="1"><label for="q6_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q6" id="q6_2" value="2"><label for="q6_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q6" id="q6_3" value="3"><label for="q6_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q6" id="q6_4" value="4"><label for="q6_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q6" id="q6_5" value="5"><label for="q6_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q7">
+<div class="q-label"><span class="q-num">Q7</span>Depth, rigour, and academic standards of programme content.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q7" id="q7_1" value="1"><label for="q7_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q7" id="q7_2" value="2"><label for="q7_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q7" id="q7_3" value="3"><label for="q7_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q7" id="q7_4" value="4"><label for="q7_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q7" id="q7_5" value="5"><label for="q7_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q8">
+<div class="q-label"><span class="q-num">Q8</span>Currency and practical applicability of course materials.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q8" id="q8_1" value="1"><label for="q8_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q8" id="q8_2" value="2"><label for="q8_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q8" id="q8_3" value="3"><label for="q8_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q8" id="q8_4" value="4"><label for="q8_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q8" id="q8_5" value="5"><label for="q8_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q9">
+<div class="q-label"><span class="q-num">Q9</span>Alignment of the programme with the needs of your industry or sector.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q9" id="q9_1" value="1"><label for="q9_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q9" id="q9_2" value="2"><label for="q9_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q9" id="q9_3" value="3"><label for="q9_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q9" id="q9_4" value="4"><label for="q9_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q9" id="q9_5" value="5"><label for="q9_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q10">
+<div class="q-label"><span class="q-num">Q10</span>Quality and fairness of assessments, assignments, and dissertations.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q10" id="q10_1" value="1"><label for="q10_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q10" id="q10_2" value="2"><label for="q10_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q10" id="q10_3" value="3"><label for="q10_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q10" id="q10_4" value="4"><label for="q10_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q10" id="q10_5" value="5"><label for="q10_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section">
+<div class="section-head"><div class="section-num">3</div><div class="section-title">Faculty &amp; Teaching Excellence</div></div>
+<div class="section-body">
+
+<div class="question" data-q="q11">
+<div class="q-label"><span class="q-num">Q11</span>Subject-matter expertise of the faculty and lecturers.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q11" id="q11_1" value="1"><label for="q11_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q11" id="q11_2" value="2"><label for="q11_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q11" id="q11_3" value="3"><label for="q11_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q11" id="q11_4" value="4"><label for="q11_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q11" id="q11_5" value="5"><label for="q11_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q12">
+<div class="q-label"><span class="q-num">Q12</span>Ability of lecturers to engage, inspire, and facilitate learning.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q12" id="q12_1" value="1"><label for="q12_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q12" id="q12_2" value="2"><label for="q12_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q12" id="q12_3" value="3"><label for="q12_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q12" id="q12_4" value="4"><label for="q12_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q12" id="q12_5" value="5"><label for="q12_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q13">
+<div class="q-label"><span class="q-num">Q13</span>Accessibility and responsiveness of faculty outside scheduled sessions.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q13" id="q13_1" value="1"><label for="q13_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q13" id="q13_2" value="2"><label for="q13_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q13" id="q13_3" value="3"><label for="q13_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q13" id="q13_4" value="4"><label for="q13_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q13" id="q13_5" value="5"><label for="q13_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q14">
+<div class="q-label"><span class="q-num">Q14</span>Effectiveness and interactivity of live online sessions.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q14" id="q14_1" value="1"><label for="q14_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q14" id="q14_2" value="2"><label for="q14_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q14" id="q14_3" value="3"><label for="q14_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q14" id="q14_4" value="4"><label for="q14_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q14" id="q14_5" value="5"><label for="q14_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q15">
+<div class="q-label"><span class="q-num">Q15</span>Quality, constructiveness, and timeliness of feedback on your work.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q15" id="q15_1" value="1"><label for="q15_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q15" id="q15_2" value="2"><label for="q15_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q15" id="q15_3" value="3"><label for="q15_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q15" id="q15_4" value="4"><label for="q15_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q15" id="q15_5" value="5"><label for="q15_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section">
+<div class="section-head"><div class="section-num">4</div><div class="section-title">Technology &amp; Student Support</div></div>
+<div class="section-body">
+
+<div class="question" data-q="q16">
+<div class="q-label"><span class="q-num">Q16</span>Ease of use and navigation of the Learning Management System (LMS).</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q16" id="q16_1" value="1"><label for="q16_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q16" id="q16_2" value="2"><label for="q16_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q16" id="q16_3" value="3"><label for="q16_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q16" id="q16_4" value="4"><label for="q16_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q16" id="q16_5" value="5"><label for="q16_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q17">
+<div class="q-label"><span class="q-num">Q17</span>Reliability, speed, and uptime of the online learning platform.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q17" id="q17_1" value="1"><label for="q17_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q17" id="q17_2" value="2"><label for="q17_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q17" id="q17_3" value="3"><label for="q17_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q17" id="q17_4" value="4"><label for="q17_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q17" id="q17_5" value="5"><label for="q17_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q18">
+<div class="q-label"><span class="q-num">Q18</span>Accessibility and quality of recorded sessions and study materials.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q18" id="q18_1" value="1"><label for="q18_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q18" id="q18_2" value="2"><label for="q18_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q18" id="q18_3" value="3"><label for="q18_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q18" id="q18_4" value="4"><label for="q18_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q18" id="q18_5" value="5"><label for="q18_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q19">
+<div class="q-label"><span class="q-num">Q19</span>Responsiveness and effectiveness of the student support team.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q19" id="q19_1" value="1"><label for="q19_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q19" id="q19_2" value="2"><label for="q19_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q19" id="q19_3" value="3"><label for="q19_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q19" id="q19_4" value="4"><label for="q19_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q19" id="q19_5" value="5"><label for="q19_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q20">
+<div class="q-label"><span class="q-num">Q20</span>Flexibility of the programme in accommodating your professional commitments.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q20" id="q20_1" value="1"><label for="q20_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q20" id="q20_2" value="2"><label for="q20_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q20" id="q20_3" value="3"><label for="q20_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q20" id="q20_4" value="4"><label for="q20_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q20" id="q20_5" value="5"><label for="q20_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section">
+<div class="section-head"><div class="section-num">5</div><div class="section-title">Career Impact &amp; Global Learning Experience</div></div>
+<div class="section-body">
+
+<div class="question" data-q="q21">
+<div class="q-label"><span class="q-num">Q21</span>The programme meaningfully improved my professional competencies and skills.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q21" id="q21_1" value="1"><label for="q21_1"><span class="likert-num">1</span><span class="likert-label">Strongly Disagree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q21" id="q21_2" value="2"><label for="q21_2"><span class="likert-num">2</span><span class="likert-label">Disagree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q21" id="q21_3" value="3"><label for="q21_3"><span class="likert-num">3</span><span class="likert-label">Neutral</span></label></div>
+<div class="likert-opt"><input type="radio" name="q21" id="q21_4" value="4"><label for="q21_4"><span class="likert-num">4</span><span class="likert-label">Agree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q21" id="q21_5" value="5"><label for="q21_5"><span class="likert-num">5</span><span class="likert-label">Strongly Agree</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q22">
+<div class="q-label"><span class="q-num">Q22</span>Have you experienced any career advancement since enrolling at EBS?<span class="q-required">*</span></div>
+<div class="radio-group">
+<div class="radio-pill"><input type="radio" name="q22" id="q22a" value="Promoted/raise" required><label for="q22a">Yes — promoted or salary increase</label></div>
+<div class="radio-pill"><input type="radio" name="q22" id="q22b" value="New role"><label for="q22b">Yes — new role or career transition</label></div>
+<div class="radio-pill"><input type="radio" name="q22" id="q22c" value="Exploring"><label for="q22c">Not yet, but actively exploring</label></div>
+<div class="radio-pill"><input type="radio" name="q22" id="q22d" value="No change"><label for="q22d">No change observed to date</label></div>
+</div>
+</div>
+
+<div class="question" data-q="q23">
+<div class="q-label"><span class="q-num">Q23</span>Value of learning alongside a diverse global cohort of professionals.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q23" id="q23_1" value="1"><label for="q23_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q23" id="q23_2" value="2"><label for="q23_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q23" id="q23_3" value="3"><label for="q23_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q23" id="q23_4" value="4"><label for="q23_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q23" id="q23_5" value="5"><label for="q23_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q24">
+<div class="q-label"><span class="q-num">Q24</span>Which areas of career support would you most like EBS to strengthen? <em>(Select all that apply)</em></div>
+<div class="check-group">
+<div class="check-pill"><input type="checkbox" name="q24" id="q24a" value="Mentoring"><label for="q24a">Industry mentoring programmes</label></div>
+<div class="check-pill"><input type="checkbox" name="q24" id="q24b" value="Alumni networking"><label for="q24b">Alumni networking events</label></div>
+<div class="check-pill"><input type="checkbox" name="q24" id="q24c" value="Employer partnerships"><label for="q24c">Employer partnerships &amp; internships</label></div>
+<div class="check-pill"><input type="checkbox" name="q24" id="q24d" value="Certifications"><label for="q24d">Professional certification pathways</label></div>
+<div class="check-pill"><input type="checkbox" name="q24" id="q24e" value="Leadership workshops"><label for="q24e">Executive leadership development workshops</label></div>
+<div class="check-pill"><input type="checkbox" name="q24" id="q24f" value="Speaker series"><label for="q24f">Access to global industry speaker series</label></div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section">
+<div class="section-head"><div class="section-num">6</div><div class="section-title">Overall Satisfaction &amp; Recommendations</div></div>
+<div class="section-body">
+
+<div class="question" data-q="q25">
+<div class="q-label"><span class="q-num">Q25</span>Overall, how satisfied are you with your experience at Eaton Business School?</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q25" id="q25_1" value="1"><label for="q25_1"><span class="likert-num">1</span><span class="likert-label">Very Dissatisfied</span></label></div>
+<div class="likert-opt"><input type="radio" name="q25" id="q25_2" value="2"><label for="q25_2"><span class="likert-num">2</span><span class="likert-label">Dissatisfied</span></label></div>
+<div class="likert-opt"><input type="radio" name="q25" id="q25_3" value="3"><label for="q25_3"><span class="likert-num">3</span><span class="likert-label">Neutral</span></label></div>
+<div class="likert-opt"><input type="radio" name="q25" id="q25_4" value="4"><label for="q25_4"><span class="likert-num">4</span><span class="likert-label">Satisfied</span></label></div>
+<div class="likert-opt"><input type="radio" name="q25" id="q25_5" value="5"><label for="q25_5"><span class="likert-num">5</span><span class="likert-label">Very Satisfied</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q26">
+<div class="q-label"><span class="q-num">Q26</span>The programme represented good value for the investment of time and money.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q26" id="q26_1" value="1"><label for="q26_1"><span class="likert-num">1</span><span class="likert-label">Strongly Disagree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q26" id="q26_2" value="2"><label for="q26_2"><span class="likert-num">2</span><span class="likert-label">Disagree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q26" id="q26_3" value="3"><label for="q26_3"><span class="likert-num">3</span><span class="likert-label">Neutral</span></label></div>
+<div class="likert-opt"><input type="radio" name="q26" id="q26_4" value="4"><label for="q26_4"><span class="likert-num">4</span><span class="likert-label">Agree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q26" id="q26_5" value="5"><label for="q26_5"><span class="likert-num">5</span><span class="likert-label">Strongly Agree</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q27">
+<div class="q-label"><span class="q-num">Q27</span>On a scale of 0 to 10, how likely are you to recommend EBS to a colleague or professional peer?</div>
+<div class="nps-row">
+<div class="nps-opt"><input type="radio" name="q27" id="q27_0" value="0"><label for="q27_0">0</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_1" value="1"><label for="q27_1">1</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_2" value="2"><label for="q27_2">2</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_3" value="3"><label for="q27_3">3</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_4" value="4"><label for="q27_4">4</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_5" value="5"><label for="q27_5">5</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_6" value="6"><label for="q27_6">6</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_7" value="7"><label for="q27_7">7</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_8" value="8"><label for="q27_8">8</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_9" value="9"><label for="q27_9">9</label></div>
+<div class="nps-opt"><input type="radio" name="q27" id="q27_10" value="10"><label for="q27_10">10</label></div>
+</div>
+<div class="nps-anchors"><span>Not at all likely</span><span>Extremely likely</span></div>
+</div>
+
+<div class="question" data-q="q28">
+<div class="q-label"><span class="q-num">Q28</span>What is the single greatest strength of Eaton Business School?</div>
+<textarea name="q28" class="text-input" rows="3" placeholder="Share your thoughts..."></textarea>
+</div>
+
+<div class="question" data-q="q29">
+<div class="q-label"><span class="q-num">Q29</span>What is the single most important area for improvement?</div>
+<textarea name="q29" class="text-input" rows="3" placeholder="Share your thoughts..."></textarea>
+</div>
+
+<div class="question" data-q="consent">
+<div class="consent-box">
+<input type="checkbox" id="consent" name="consent" required>
+<label class="consent-text" for="consent">I consent to my anonymous responses being used for quality improvement of EBS programmes, institutional reporting, and global academic partnership development.</label>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-wrap">
+<button type="submit" class="submit-btn" id="submitBtn">
+<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+<span id="btnText">Submit Survey</span>
+</button>
+<div id="statusMsg"></div>
+</div>
+
+</form>
+
+<!-- THANK YOU -->
+<div class="thankyou" id="thankyou">
+<div class="thankyou-icon">&#10003;</div>
+<h2>Thank You</h2>
+<p>Your feedback has been recorded. It will directly inform the continuous improvement of EBS programmes and services.</p>
+<p style="margin-top:1rem;font-size:.82rem;color:var(--gold)">Eaton Business School — Rome Graduation 2026</p>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  GOOGLE SHEETS INTEGRATION
+// ═══════════════════════════════════════════════════════
+//  STEP 1: Deploy the Google Apps Script (see separate file)
+//  STEP 2: Paste your Web App URL below:
+const GOOGLE_SCRIPT_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+// ═══════════════════════════════════════════════════════
+
+const form = document.getElementById('surveyForm');
+const allQuestions = form.querySelectorAll('.question');
+const totalQ = allQuestions.length;
+const submitBtn = document.getElementById('submitBtn');
+const btnText = document.getElementById('btnText');
+const statusMsg = document.getElementById('statusMsg');
+
+// ── PROGRESS BAR ──
+function updateProgress(){
+  let answered = 0;
+  allQuestions.forEach(q => {
+    const radios = q.querySelectorAll('input[type=radio]');
+    const checks = q.querySelectorAll('input[type=checkbox]');
+    const texts = q.querySelectorAll('input[type=text], textarea');
+    if(radios.length && [...radios].some(r=>r.checked)) answered++;
+    else if(checks.length && [...checks].some(c=>c.checked)) answered++;
+    else if(texts.length && [...texts].some(t=>t.value.trim())) answered++;
+  });
+  const pct = Math.round((answered/totalQ)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = pct+'%';
+}
+
+form.addEventListener('change', updateProgress);
+form.addEventListener('input', updateProgress);
+
+// ── CUSTOM VALIDATION ──
+function validateRequired(){
+  const required = ['q1','q2','q3','q4','q5','q22'];
+  let firstError = null;
+
+  // Clear previous errors
+  document.querySelectorAll('.flash-error').forEach(el => el.classList.remove('flash-error'));
+
+  for(const name of required){
+    const q = form.querySelector('[data-q="'+name+'"]');
+    const radios = form.querySelectorAll('input[name="'+name+'"][type=radio]');
+    const textInput = form.querySelector('input[name="'+name+'"][type=text]');
+
+    let answered = false;
+    if(radios.length) answered = [...radios].some(r=>r.checked);
+    else if(textInput) answered = textInput.value.trim() !== '';
+
+    if(!answered && q){
+      q.classList.add('flash-error');
+      if(!firstError) firstError = q;
+    }
+  }
+
+  // Check consent
+  const consent = document.getElementById('consent');
+  if(!consent.checked){
+    const cq = form.querySelector('[data-q="consent"]');
+    if(cq){ cq.classList.add('flash-error'); if(!firstError) firstError = cq; }
+  }
+
+  if(firstError){
+    firstError.scrollIntoView({behavior:'smooth',block:'center'});
+    return false;
+  }
+  return true;
+}
+
+// ── SHOW STATUS ──
+function showStatus(msg, type){
+  statusMsg.className = 'status-msg ' + type;
+  statusMsg.textContent = msg;
+  statusMsg.style.display = 'block';
+}
+function clearStatus(){
+  statusMsg.style.display = 'none';
+  statusMsg.textContent = '';
+  statusMsg.className = '';
+}
+
+// ── SUBMIT HANDLER ──
+async function handleSubmit(e){
+  e.preventDefault();
+  clearStatus();
+
+  // Validate
+  if(!validateRequired()) return false;
+
+  // Collect data
+  const fd = new FormData(form);
+  const data = {};
+  const q24vals = [];
+  fd.forEach((val,key) => {
+    if(key === 'q24') q24vals.push(val);
+    else data[key] = val;
+  });
+  data.q24 = q24vals.join(', ');
+  data.timestamp = new Date().toISOString();
+  data.consent = data.consent ? 'Yes' : '';
+
+  // Check if URL is configured
+  if(GOOGLE_SCRIPT_URL === 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE'){
+    // Demo mode — just show success
+    console.log('Survey Response (demo mode):', JSON.stringify(data, null, 2));
+    showSuccess();
+    return false;
+  }
+
+  // Show loading
+  submitBtn.disabled = true;
+  btnText.innerHTML = '<span class="spinner"></span> Submitting…';
+  submitBtn.querySelector('svg').style.display = 'none';
+
+  try {
+    await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+
+    // no-cors means we can't read the response, so we assume success
+    showSuccess();
+
+  } catch(err) {
+    console.error('Submission error:', err);
+    showStatus('Something went wrong. Please check your connection and try again.', 'error');
+    resetButton();
+  }
+
+  return false;
+}
+
+function showSuccess(){
+  form.style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  document.getElementById('thankyou').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetButton(){
+  submitBtn.disabled = false;
+  btnText.textContent = 'Submit Survey';
+  submitBtn.querySelector('svg').style.display = '';
+}
+</script>
+</body>
+</html>
