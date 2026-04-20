@@ -416,6 +416,30 @@ letter-spacing:.05em;
 text-transform:uppercase;
 }
 .referral-form .radio-group{justify-content:center}
+.ref-privacy-note{
+font-size:.78rem;
+color:var(--text-light);
+background:rgba(11,29,58,.04);
+border:1px solid rgba(11,29,58,.08);
+padding:.7rem .95rem;
+border-radius:8px;
+margin-bottom:1.2rem;
+line-height:1.55;
+text-align:left;
+max-width:360px;
+margin-left:auto;margin-right:auto;
+}
+.ref-privacy-note strong{color:var(--navy);font-weight:600}
+.ref-section-label{
+font-size:.72rem;
+color:var(--text-light);
+margin-top:.3rem;
+margin-bottom:-.3rem;
+text-align:center;
+letter-spacing:.05em;
+text-transform:uppercase;
+font-weight:500;
+}
 .referral-btn{
 background:var(--navy);
 color:var(--gold);
@@ -952,6 +976,52 @@ animation:flashWarn .5s ease;
 <textarea name="q30" class="text-input" rows="3" placeholder="Share your thoughts..."></textarea>
 </div>
 
+</div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section">
+<div class="section-head"><div class="section-num">7</div><div class="section-title">Admission &amp; Enrolment Experience</div></div>
+<div class="section-body">
+
+<div class="question" data-q="q31">
+<div class="q-label"><span class="q-num">Q31</span>Looking back, how would you rate the clarity and helpfulness of your admission experience at EBS?</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q31" id="q31_1" value="1"><label for="q31_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q31" id="q31_2" value="2"><label for="q31_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q31" id="q31_3" value="3"><label for="q31_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q31" id="q31_4" value="4"><label for="q31_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q31" id="q31_5" value="5"><label for="q31_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q32">
+<div class="q-label"><span class="q-num">Q32</span>How would you rate the ease of the enrolment and payment process when you first joined EBS?</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q32" id="q32_1" value="1"><label for="q32_1"><span class="likert-num">1</span><span class="likert-label">Very Difficult</span></label></div>
+<div class="likert-opt"><input type="radio" name="q32" id="q32_2" value="2"><label for="q32_2"><span class="likert-num">2</span><span class="likert-label">Difficult</span></label></div>
+<div class="likert-opt"><input type="radio" name="q32" id="q32_3" value="3"><label for="q32_3"><span class="likert-num">3</span><span class="likert-label">Moderate</span></label></div>
+<div class="likert-opt"><input type="radio" name="q32" id="q32_4" value="4"><label for="q32_4"><span class="likert-num">4</span><span class="likert-label">Easy</span></label></div>
+<div class="likert-opt"><input type="radio" name="q32" id="q32_5" value="5"><label for="q32_5"><span class="likert-num">5</span><span class="likert-label">Very Easy</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q33">
+<div class="q-label"><span class="q-num">Q33</span>How would you rate the quality of your induction and onboarding as a new EBS student?</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q33" id="q33_1" value="1"><label for="q33_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q33" id="q33_2" value="2"><label for="q33_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q33" id="q33_3" value="3"><label for="q33_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q33" id="q33_4" value="4"><label for="q33_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q33" id="q33_5" value="5"><label for="q33_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q34">
+<div class="q-label"><span class="q-num">Q34</span>Is there anything about the admission or enrolment process that EBS could improve for future students?</div>
+<textarea name="q34" class="text-input" rows="3" placeholder="Share your thoughts..."></textarea>
+</div>
+
 <div class="question" data-q="consent">
 <div class="consent-box">
 <input type="checkbox" id="consent" name="consent" required>
@@ -983,10 +1053,20 @@ animation:flashWarn .5s ease;
 <div class="referral-intro">One more thought — if you&rsquo;d like</div>
 <p class="referral-body">If someone in your circle &mdash; a colleague, a friend, someone quietly considering what&rsquo;s next &mdash; might find meaning in a journey like yours, we&rsquo;d welcome the chance to meet them. Not a pitch. Just a conversation.</p>
 
+<div class="ref-privacy-note">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;display:inline-block;vertical-align:-3px;margin-right:.35rem;color:var(--gold)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+Your survey responses are <strong>anonymous</strong>. The referral details below are captured in a <strong>separate secure record</strong> and are never linked to your survey answers.
+</div>
+
 <form id="referralForm" class="referral-form" novalidate>
+<div class="ref-section-label">Your name (so we can thank you)</div>
+<input type="text" name="referrer_name" class="text-input" placeholder="Your name (optional)" autocomplete="off">
+
+<div class="ref-section-label">Who would you like to refer?</div>
 <input type="text" name="ref_name" class="text-input" placeholder="Their name" autocomplete="off">
 <input type="email" name="ref_email" class="text-input" placeholder="Their email" autocomplete="off">
 <input type="tel" name="ref_phone" class="text-input" placeholder="WhatsApp number with country code (e.g. +971 50 123 4567)" autocomplete="off">
+
 <div class="ref-program-label">Programme of interest</div>
 <div class="radio-group">
 <div class="radio-pill"><input type="radio" name="ref_program" id="ref_emba" value="Executive MBA"><label for="ref_emba">Executive MBA</label></div>
@@ -1178,6 +1258,7 @@ if(referralForm){
     const fd = new FormData(referralForm);
     const refData = {
       type: 'referral',
+      referrer_name: (fd.get('referrer_name') || '').trim(),
       ref_name: (fd.get('ref_name') || '').trim(),
       ref_email: (fd.get('ref_email') || '').trim(),
       ref_phone: (fd.get('ref_phone') || '').trim(),
