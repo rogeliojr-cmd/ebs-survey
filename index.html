@@ -170,7 +170,7 @@ vertical-align:middle;
 }
 .q-required{color:var(--red);margin-left:.2rem}
 
-/* ── RADIO PILLS ── */
+/* ── RADIO PILLS (single select) ── */
 .radio-group{display:flex;flex-wrap:wrap;gap:.5rem}
 .radio-pill{position:relative}
 .radio-pill input{position:absolute;opacity:0;width:0;height:0}
@@ -282,7 +282,7 @@ padding:.7rem 1rem;
 border:1px solid var(--border);
 border-radius:8px;
 font-family:'Source Sans 3',sans-serif;
-font-size:16px;
+font-size:16px; /* Prevents iOS zoom */
 color:var(--text);
 transition:border-color .2s;
 background:var(--white);
@@ -325,7 +325,6 @@ border:2px solid rgba(200,168,78,.3);
 border-top-color:var(--gold);
 border-radius:50%;
 animation:spin .6s linear infinite;
-vertical-align:middle;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -336,21 +335,17 @@ margin-top:1rem;
 font-size:.88rem;
 padding:.6rem 1rem;
 border-radius:8px;
-display:none;
+animation:fadeUp .3s ease;
 }
 .status-msg.error{
-display:block;
 background:rgba(192,57,43,.08);
 color:var(--red);
 border:1px solid rgba(192,57,43,.2);
-animation:fadeUp .3s ease;
 }
 .status-msg.success{
-display:block;
 background:rgba(27,122,74,.08);
 color:var(--green);
 border:1px solid rgba(27,122,74,.2);
-animation:fadeUp .3s ease;
 }
 
 /* ── THANK YOU ── */
@@ -397,46 +392,74 @@ min-width:18px;
 }
 .consent-text{font-size:.82rem;color:var(--text-light);line-height:1.5;cursor:pointer}
 
-/* ── VALIDATION ── */
-.question.flash-error{animation:flashWarn .5s ease}
+/* ── VALIDATION FLASH ── */
+.question.flash-error{
+animation:flashWarn .5s ease;
+}
 @keyframes flashWarn{
 0%,100%{background:transparent}
 50%{background:rgba(192,57,43,.06)}
 }
 .question.flash-error .q-label{color:var(--red)}
 
-/* ══════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════ */
+/* ══════════════════════════════════════
+   RESPONSIVE — MOBILE FIRST ENHANCEMENTS
+   ══════════════════════════════════════ */
+
 @media(max-width:600px){
   .survey-header{padding:2rem 1.2rem 1.5rem}
   .header-sub{font-size:.84rem}
+
   .progress-wrap{padding:.5rem 1rem}
+
   .survey-body{padding:1rem 1rem 3rem}
+
   .section{margin-bottom:1.4rem;border-radius:10px}
   .section-head{padding:.8rem 1rem}
   .section-title{font-size:.95rem}
   .section-body{padding:1rem}
+
   .question{margin-bottom:1.5rem}
   .q-label{font-size:.88rem;margin-bottom:.6rem}
+
+  /* Radio & Checkbox pills — full width stacking on small screens */
   .radio-group,.check-group{gap:.4rem}
   .radio-pill,.check-pill{width:100%}
-  .radio-pill label,.check-pill label{font-size:.84rem;padding:.6rem .9rem;text-align:center}
+  .radio-pill label,.check-pill label{
+    font-size:.84rem;
+    padding:.6rem .9rem;
+    text-align:center;
+  }
+
+  /* Likert — numbers only, compact */
   .likert{gap:.25rem}
   .likert-opt label{padding:.5rem .15rem;min-height:50px;border-radius:8px}
   .likert-label{display:none}
+
+  /* NPS — 2 rows of 5+6 */
   .nps-row{flex-wrap:wrap;gap:.3rem}
   .nps-opt{flex:0 0 calc(20% - .25rem)}
   .nps-opt label{height:42px;font-size:.88rem;border-radius:6px}
   .nps-anchors{margin-top:.3rem}
   .nps-anchors span{font-size:.62rem}
+
   .text-input{padding:.65rem .85rem;font-size:16px}
-  .submit-btn{width:100%;padding:1rem;font-size:1.05rem;border-radius:12px}
+
+  .submit-btn{
+    width:100%;
+    padding:1rem;
+    font-size:1.05rem;
+    border-radius:12px;
+  }
+
   .consent-box{padding:.85rem 1rem}
   .consent-text{font-size:.78rem}
+
   .thankyou{margin:2rem 1rem;padding:3rem 1.5rem}
   .thankyou h2{font-size:1.4rem}
 }
+
+/* Tiny phones (iPhone SE, etc.) */
 @media(max-width:380px){
   .survey-header{padding:1.5rem 1rem 1.2rem}
   .ebs-logo{font-size:.95rem}
@@ -448,6 +471,8 @@ min-width:18px;
   .likert-opt label{min-height:44px}
   .likert-num{font-size:1rem}
 }
+
+/* Landscape phones */
 @media(max-width:800px) and (orientation:landscape){
   .survey-header{padding:1.5rem 1.5rem 1rem}
   .radio-pill,.check-pill{width:auto}
@@ -468,7 +493,7 @@ min-width:18px;
 </div>
 
 <!-- PROGRESS -->
-<div class="progress-wrap" id="progressWrap">
+<div class="progress-wrap">
 <div class="progress-inner">
 <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
 <div class="progress-label" id="progressLabel">0%</div>
@@ -476,7 +501,7 @@ min-width:18px;
 </div>
 
 <!-- FORM -->
-<form class="survey-body" id="surveyForm" novalidate>
+<form class="survey-body" id="surveyForm" onsubmit="return handleSubmit(event)" novalidate>
 
 <!-- SECTION 1 -->
 <div class="section">
@@ -486,7 +511,7 @@ min-width:18px;
 <div class="question" data-q="q1">
 <div class="q-label"><span class="q-num">Q1</span>Which programme did you complete?<span class="q-required">*</span></div>
 <div class="radio-group">
-<div class="radio-pill"><input type="radio" name="q1" id="q1a" value="DBA"><label for="q1a">Doctor of Business Administration (DBA)</label></div>
+<div class="radio-pill"><input type="radio" name="q1" id="q1a" value="DBA" required><label for="q1a">Doctor of Business Administration (DBA)</label></div>
 <div class="radio-pill"><input type="radio" name="q1" id="q1b" value="EMBA"><label for="q1b">Executive MBA (EMBA)</label></div>
 <div class="radio-pill"><input type="radio" name="q1" id="q1c" value="MBA"><label for="q1c">MBA</label></div>
 <div class="radio-pill"><input type="radio" name="q1" id="q1d" value="Masters"><label for="q1d">Masters</label></div>
@@ -499,7 +524,7 @@ min-width:18px;
 <div class="question" data-q="q2">
 <div class="q-label"><span class="q-num">Q2</span>Which university partner awarded your qualification?<span class="q-required">*</span></div>
 <div class="radio-group">
-<div class="radio-pill"><input type="radio" name="q2" id="q2a" value="UniMarconi"><label for="q2a">Guglielmo Marconi University</label></div>
+<div class="radio-pill"><input type="radio" name="q2" id="q2a" value="UniMarconi" required><label for="q2a">Guglielmo Marconi University</label></div>
 <div class="radio-pill"><input type="radio" name="q2" id="q2b" value="Acacia"><label for="q2b">Acacia University</label></div>
 <div class="radio-pill"><input type="radio" name="q2" id="q2c" value="Gloucestershire"><label for="q2c">University of Gloucestershire</label></div>
 <div class="radio-pill"><input type="radio" name="q2" id="q2d" value="CIQ"><label for="q2d">Cambridge International Qualifications</label></div>
@@ -509,13 +534,13 @@ min-width:18px;
 
 <div class="question" data-q="q3">
 <div class="q-label"><span class="q-num">Q3</span>What is your country of residence?<span class="q-required">*</span></div>
-<input type="text" name="q3" class="text-input" placeholder="e.g. United Arab Emirates">
+<input type="text" name="q3" class="text-input" placeholder="e.g. United Arab Emirates" required>
 </div>
 
 <div class="question" data-q="q4">
 <div class="q-label"><span class="q-num">Q4</span>What was your primary motivation for enrolling at EBS?<span class="q-required">*</span></div>
 <div class="radio-group">
-<div class="radio-pill"><input type="radio" name="q4" id="q4a" value="Career advancement"><label for="q4a">Career advancement or promotion</label></div>
+<div class="radio-pill"><input type="radio" name="q4" id="q4a" value="Career advancement" required><label for="q4a">Career advancement or promotion</label></div>
 <div class="radio-pill"><input type="radio" name="q4" id="q4b" value="Knowledge"><label for="q4b">Knowledge and skills development</label></div>
 <div class="radio-pill"><input type="radio" name="q4" id="q4c" value="Credential"><label for="q4c">International credential recognition</label></div>
 <div class="radio-pill"><input type="radio" name="q4" id="q4d" value="Networking"><label for="q4d">Professional networking</label></div>
@@ -526,7 +551,7 @@ min-width:18px;
 <div class="question" data-q="q5">
 <div class="q-label"><span class="q-num">Q5</span>How did you first hear about EBS?<span class="q-required">*</span></div>
 <div class="radio-group">
-<div class="radio-pill"><input type="radio" name="q5" id="q5a" value="Referral"><label for="q5a">Referral from colleague or alumni</label></div>
+<div class="radio-pill"><input type="radio" name="q5" id="q5a" value="Referral" required><label for="q5a">Referral from colleague or alumni</label></div>
 <div class="radio-pill"><input type="radio" name="q5" id="q5b" value="Search"><label for="q5b">Online search</label></div>
 <div class="radio-pill"><input type="radio" name="q5" id="q5c" value="Social media"><label for="q5c">Social media</label></div>
 <div class="radio-pill"><input type="radio" name="q5" id="q5d" value="EBS rep"><label for="q5d">EBS representative</label></div>
@@ -746,7 +771,7 @@ min-width:18px;
 <div class="question" data-q="q22">
 <div class="q-label"><span class="q-num">Q22</span>Have you experienced any career advancement since enrolling at EBS?<span class="q-required">*</span></div>
 <div class="radio-group">
-<div class="radio-pill"><input type="radio" name="q22" id="q22a" value="Promoted/raise"><label for="q22a">Yes — promoted or salary increase</label></div>
+<div class="radio-pill"><input type="radio" name="q22" id="q22a" value="Promoted/raise" required><label for="q22a">Yes — promoted or salary increase</label></div>
 <div class="radio-pill"><input type="radio" name="q22" id="q22b" value="New role"><label for="q22b">Yes — new role or career transition</label></div>
 <div class="radio-pill"><input type="radio" name="q22" id="q22c" value="Exploring"><label for="q22c">Not yet, but actively exploring</label></div>
 <div class="radio-pill"><input type="radio" name="q22" id="q22d" value="No change"><label for="q22d">No change observed to date</label></div>
@@ -836,7 +861,7 @@ min-width:18px;
 
 <div class="question" data-q="consent">
 <div class="consent-box">
-<input type="checkbox" id="consent" name="consent">
+<input type="checkbox" id="consent" name="consent" required>
 <label class="consent-text" for="consent">I consent to my anonymous responses being used for quality improvement of EBS programmes, institutional reporting, and global academic partnership development.</label>
 </div>
 </div>
@@ -847,10 +872,10 @@ min-width:18px;
 <!-- SUBMIT -->
 <div class="submit-wrap">
 <button type="submit" class="submit-btn" id="submitBtn">
-<svg viewBox="0 0 24 24" id="btnIcon"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+<svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
 <span id="btnText">Submit Survey</span>
 </button>
-<div class="status-msg" id="statusMsg"></div>
+<div id="statusMsg"></div>
 </div>
 
 </form>
@@ -864,173 +889,166 @@ min-width:18px;
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════════════
-//  GOOGLE SHEETS CONFIGURATION
-//  Replace the URL below with your Google Apps Script Web App URL
-//  It should look like: https://script.google.com/macros/s/AKfycbw.../exec
-// ═══════════════════════════════════════════════════════════════
-var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWVTDrDfEKuXVGwiKbl87dE24qDV5uUZIPC2FF6lDYBxI-29eKBCNkaBNp6B6urAxZ/exec';
-// ═══════════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+//  GOOGLE SHEETS INTEGRATION
+// ═══════════════════════════════════════════════════════
+//  STEP 1: Deploy the Google Apps Script (see separate file)
+//          → When deploying: "Execute as: Me" AND "Who has access: Anyone"
+//          → Every time you EDIT the script, click
+//            Deploy → Manage deployments → ✏️ → Version: "New version" → Deploy
+//  STEP 2: Paste your Web App URL below (ends in /exec):
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyWVTDrDfEKuXVGwiKbl87dE24qDV5uUZIPC2FF6lDYBxI-29eKBCNkaBNp6B6urAxZ/exec';
+// ═══════════════════════════════════════════════════════
 
-var form = document.getElementById('surveyForm');
-var allQuestions = form.querySelectorAll('.question');
-var totalQ = allQuestions.length;
-var submitBtn = document.getElementById('submitBtn');
-var btnText = document.getElementById('btnText');
-var btnIcon = document.getElementById('btnIcon');
-var statusMsg = document.getElementById('statusMsg');
+const form = document.getElementById('surveyForm');
+const allQuestions = form.querySelectorAll('.question');
+const totalQ = allQuestions.length;
+const submitBtn = document.getElementById('submitBtn');
+const btnText = document.getElementById('btnText');
+const statusMsg = document.getElementById('statusMsg');
 
 // ── PROGRESS BAR ──
-function updateProgress() {
-  var answered = 0;
-  for (var i = 0; i < allQuestions.length; i++) {
-    var q = allQuestions[i];
-    var radios = q.querySelectorAll('input[type=radio]');
-    var checks = q.querySelectorAll('input[type=checkbox]');
-    var texts = q.querySelectorAll('input[type=text], textarea');
-    var hasAnswer = false;
-    for (var j = 0; j < radios.length; j++) { if (radios[j].checked) { hasAnswer = true; break; } }
-    if (!hasAnswer) { for (var j = 0; j < checks.length; j++) { if (checks[j].checked) { hasAnswer = true; break; } } }
-    if (!hasAnswer) { for (var j = 0; j < texts.length; j++) { if (texts[j].value.trim()) { hasAnswer = true; break; } } }
-    if (hasAnswer) answered++;
-  }
-  var pct = Math.round((answered / totalQ) * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressLabel').textContent = pct + '%';
+function updateProgress(){
+  let answered = 0;
+  allQuestions.forEach(q => {
+    const radios = q.querySelectorAll('input[type=radio]');
+    const checks = q.querySelectorAll('input[type=checkbox]');
+    const texts = q.querySelectorAll('input[type=text], textarea');
+    if(radios.length && [...radios].some(r=>r.checked)) answered++;
+    else if(checks.length && [...checks].some(c=>c.checked)) answered++;
+    else if(texts.length && [...texts].some(t=>t.value.trim())) answered++;
+  });
+  const pct = Math.round((answered/totalQ)*100);
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressLabel').textContent = pct+'%';
 }
 
 form.addEventListener('change', updateProgress);
 form.addEventListener('input', updateProgress);
 
-// ── VALIDATION ──
-function validateRequired() {
-  var required = ['q1', 'q2', 'q3', 'q4', 'q5', 'q22'];
-  var firstError = null;
+// ── CUSTOM VALIDATION ──
+function validateRequired(){
+  const required = ['q1','q2','q3','q4','q5','q22'];
+  let firstError = null;
 
-  // Clear previous
-  var prev = document.querySelectorAll('.flash-error');
-  for (var i = 0; i < prev.length; i++) prev[i].classList.remove('flash-error');
+  // Clear previous errors
+  document.querySelectorAll('.flash-error').forEach(el => el.classList.remove('flash-error'));
 
-  for (var i = 0; i < required.length; i++) {
-    var name = required[i];
-    var q = form.querySelector('[data-q="' + name + '"]');
-    var radios = form.querySelectorAll('input[name="' + name + '"][type=radio]');
-    var textInput = form.querySelector('input[name="' + name + '"][type=text]');
-    var answered = false;
+  for(const name of required){
+    const q = form.querySelector('[data-q="'+name+'"]');
+    const radios = form.querySelectorAll('input[name="'+name+'"][type=radio]');
+    const textInput = form.querySelector('input[name="'+name+'"][type=text]');
 
-    for (var j = 0; j < radios.length; j++) { if (radios[j].checked) { answered = true; break; } }
-    if (!answered && textInput && textInput.value.trim() !== '') answered = true;
+    let answered = false;
+    if(radios.length) answered = [...radios].some(r=>r.checked);
+    else if(textInput) answered = textInput.value.trim() !== '';
 
-    if (!answered && q) {
+    if(!answered && q){
       q.classList.add('flash-error');
-      if (!firstError) firstError = q;
+      if(!firstError) firstError = q;
     }
   }
 
-  // Consent
-  var consent = document.getElementById('consent');
-  if (!consent.checked) {
-    var cq = form.querySelector('[data-q="consent"]');
-    if (cq) { cq.classList.add('flash-error'); if (!firstError) firstError = cq; }
+  // Check consent
+  const consent = document.getElementById('consent');
+  if(!consent.checked){
+    const cq = form.querySelector('[data-q="consent"]');
+    if(cq){ cq.classList.add('flash-error'); if(!firstError) firstError = cq; }
   }
 
-  if (firstError) {
-    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  if(firstError){
+    firstError.scrollIntoView({behavior:'smooth',block:'center'});
     return false;
   }
   return true;
 }
 
-// ── STATUS MESSAGES ──
-function showStatus(msg, type) {
-  statusMsg.textContent = msg;
+// ── SHOW STATUS ──
+function showStatus(msg, type){
   statusMsg.className = 'status-msg ' + type;
+  statusMsg.textContent = msg;
+  statusMsg.style.display = 'block';
 }
-function clearStatus() {
+function clearStatus(){
+  statusMsg.style.display = 'none';
   statusMsg.textContent = '';
-  statusMsg.className = 'status-msg';
-}
-
-// ── COLLECT FORM DATA ──
-function collectData() {
-  var data = {};
-  var q24vals = [];
-  var elements = form.elements;
-
-  for (var i = 0; i < elements.length; i++) {
-    var el = elements[i];
-    var name = el.name;
-    if (!name) continue;
-
-    if (el.type === 'radio' && el.checked) {
-      data[name] = el.value;
-    } else if (el.type === 'checkbox' && el.checked) {
-      if (name === 'q24') {
-        q24vals.push(el.value);
-      } else if (name === 'consent') {
-        data[name] = 'Yes';
-      }
-    } else if (el.type === 'text' || el.tagName === 'TEXTAREA') {
-      if (el.value.trim()) data[name] = el.value.trim();
-    }
-  }
-
-  data.q24 = q24vals.join(', ');
-  data.timestamp = new Date().toISOString();
-  if (!data.consent) data.consent = '';
-
-  return data;
-}
-
-// ── SHOW THANK YOU ──
-function showThankYou() {
-  form.style.display = 'none';
-  document.getElementById('progressWrap').style.display = 'none';
-  document.getElementById('thankyou').classList.add('show');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// ── RESET BUTTON ──
-function resetButton() {
-  submitBtn.disabled = false;
-  btnText.textContent = 'Submit Survey';
-  btnIcon.style.display = '';
+  statusMsg.className = '';
 }
 
 // ── SUBMIT HANDLER ──
-form.addEventListener('submit', function(e) {
+async function handleSubmit(e){
   e.preventDefault();
   clearStatus();
 
-  if (!validateRequired()) return;
+  // Validate
+  if(!validateRequired()) return false;
 
-  var data = collectData();
+  // Collect data
+  const fd = new FormData(form);
+  const data = {};
+  const q24vals = [];
+  fd.forEach((val,key) => {
+    if(key === 'q24') q24vals.push(val);
+    else data[key] = val;
+  });
+  data.q24 = q24vals.join(', ');
+  data.timestamp = new Date().toISOString();
+  data.consent = data.consent ? 'Yes' : '';
+
+  // Check if URL is configured
+  if(GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyWVTDrDfEKuXVGwiKbl87dE24qDV5uUZIPC2FF6lDYBxI-29eKBCNkaBNp6B6urAxZ/exec'){
+    // Demo mode — just show success
+    console.log('Survey Response (demo mode):', JSON.stringify(data, null, 2));
+    showSuccess();
+    return false;
+  }
 
   // Show loading
   submitBtn.disabled = true;
-  btnText.innerHTML = '<span class="spinner"></span> Submitting\u2026';
-  btnIcon.style.display = 'none';
+  btnText.innerHTML = '<span class="spinner"></span> Submitting…';
+  submitBtn.querySelector('svg').style.display = 'none';
 
-  // ── ANONYMOUS BACKGROUND SUBMISSION ──
-  // Sends data silently — respondent never interacts with Google
-  var jsonStr = JSON.stringify(data);
-  var getURL = GOOGLE_SCRIPT_URL + '?data=' + encodeURIComponent(jsonStr);
+  try {
+    // Form-encoded body = "simple request" = no CORS preflight = works reliably
+    // across all browsers without no-cors, so we can actually READ the response.
+    const params = new URLSearchParams();
+    Object.keys(data).forEach(key => params.append(key, data[key] == null ? '' : String(data[key])));
 
-  // Fire the GET request via hidden iframe (same request as the browser test)
-  var iframe = document.createElement('iframe');
-  iframe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;';
-  iframe.src = getURL;
-  document.body.appendChild(iframe);
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      body: params,
+      redirect: 'follow'
+    });
 
-  // Also fire via Image (backup)
-  (new Image()).src = getURL + '&t=' + Date.now();
+    const result = await response.json();
 
-  // Show thank you after giving the request time to complete
-  setTimeout(function() {
-    showThankYou();
-    try { document.body.removeChild(iframe); } catch(ex) {}
-  }, 2500);
-});
+    if (result && result.result === 'success') {
+      showSuccess();
+    } else {
+      throw new Error((result && result.message) || 'Server did not confirm success');
+    }
+
+  } catch(err) {
+    console.error('Submission error:', err);
+    showStatus('Something went wrong. Please check your connection and try again. If the problem persists, email your response to us directly.', 'error');
+    resetButton();
+  }
+
+  return false;
+}
+
+function showSuccess(){
+  form.style.display = 'none';
+  document.querySelector('.progress-wrap').style.display = 'none';
+  document.getElementById('thankyou').classList.add('show');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetButton(){
+  submitBtn.disabled = false;
+  btnText.textContent = 'Submit Survey';
+  submitBtn.querySelector('svg').style.display = '';
+}
 </script>
 </body>
 </html>
