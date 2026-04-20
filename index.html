@@ -995,10 +995,11 @@ async function handleSubmit(e){
   data.timestamp = new Date().toISOString();
   data.consent = data.consent ? 'Yes' : '';
 
-  // Check if URL is configured
-  if(GOOGLE_SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyWVTDrDfEKuXVGwiKbl87dE24qDV5uUZIPC2FF6lDYBxI-29eKBCNkaBNp6B6urAxZ/exec'){
-    // Demo mode — just show success
-    console.log('Survey Response (demo mode):', JSON.stringify(data, null, 2));
+  // Check if URL is configured. Uses a partial sentinel match so this check
+  // can NEVER be accidentally broken by a find-and-replace on the URL above.
+  if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf('script.google.com/macros/') === -1){
+    // Demo mode — URL not configured yet, just show success for local testing
+    console.log('Survey Response (demo mode — URL not configured):', JSON.stringify(data, null, 2));
     showSuccess();
     return false;
   }
