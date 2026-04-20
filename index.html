@@ -53,14 +53,13 @@ font-size:1.1rem;
 letter-spacing:.25em;
 text-transform:uppercase;
 color:var(--gold);
-margin-bottom:.3rem;
-}
-.ebs-logo-sub{
-font-size:.7rem;
-letter-spacing:.35em;
-text-transform:uppercase;
-color:rgba(255,255,255,.45);
 margin-bottom:1.6rem;
+}
+.ebs-logo-img{
+max-height:72px;
+width:auto;
+margin-bottom:1.6rem;
+object-fit:contain;
 }
 .header-title{
 font-family:'Playfair Display',serif;
@@ -375,6 +374,88 @@ box-shadow:0 4px 20px rgba(200,168,78,.3);
 .thankyou h2{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:.5rem}
 .thankyou p{color:var(--text-light);font-size:.95rem}
 
+/* ── REFERRAL BLOCK ── */
+.referral-block{
+margin-top:2.5rem;
+padding-top:2rem;
+border-top:1px solid var(--border);
+text-align:center;
+}
+.referral-intro{
+font-family:'Playfair Display',serif;
+font-size:1.15rem;
+color:var(--navy);
+margin-bottom:.6rem;
+font-weight:600;
+}
+.referral-body{
+color:var(--text-light);
+font-size:.9rem;
+margin-bottom:1.4rem;
+line-height:1.65;
+max-width:420px;
+margin-left:auto;
+margin-right:auto;
+}
+.referral-form{
+display:flex;
+flex-direction:column;
+gap:.7rem;
+max-width:360px;
+margin:0 auto;
+text-align:left;
+}
+.referral-form .text-input{font-size:15px}
+.ref-program-label{
+font-size:.78rem;
+color:var(--text-light);
+margin-top:.3rem;
+margin-bottom:-.2rem;
+text-align:center;
+letter-spacing:.05em;
+text-transform:uppercase;
+}
+.referral-form .radio-group{justify-content:center}
+.referral-btn{
+background:var(--navy);
+color:var(--gold);
+border:none;
+padding:.8rem 1.5rem;
+font-family:'Source Sans 3',sans-serif;
+font-size:.95rem;
+font-weight:500;
+letter-spacing:.03em;
+border-radius:8px;
+cursor:pointer;
+transition:all .25s ease;
+margin-top:.6rem;
+}
+.referral-btn:hover{background:var(--navy-light);transform:translateY(-1px)}
+.referral-btn:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.ref-feedback{
+margin-top:.9rem;
+font-size:.88rem;
+padding:.7rem 1rem;
+border-radius:8px;
+text-align:center;
+}
+.ref-feedback.success{
+color:var(--green);
+background:rgba(27,122,74,.08);
+border:1px solid rgba(27,122,74,.2);
+}
+.ref-feedback.error{
+color:var(--red);
+background:rgba(192,57,43,.08);
+border:1px solid rgba(192,57,43,.2);
+}
+.thankyou-footer{
+margin-top:2.5rem;
+font-size:.8rem;
+color:var(--gold);
+letter-spacing:.05em;
+}
+
 /* ── CONSENT ── */
 .consent-box{
 display:flex;align-items:flex-start;gap:.7rem;
@@ -484,8 +565,8 @@ animation:flashWarn .5s ease;
 <!-- HEADER -->
 <div class="survey-header">
 <div class="header-inner">
-<div class="ebs-logo">Eaton Business School</div>
-<div class="ebs-logo-sub">Westford Education Group</div>
+<!-- EBS logo (base64-embedded — no external dependency, works forever) -->
+<img class="ebs-logo-img" src="data:image/png;base64,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" alt="Eaton Business School">
 <div class="header-title">Graduate Satisfaction Survey</div>
 <div class="header-sub">Your feedback shapes the future of EBS. This survey takes approximately 8 minutes and all responses are strictly anonymous.</div>
 <div class="header-badge">Rome Graduation — April 2026</div>
@@ -551,7 +632,8 @@ animation:flashWarn .5s ease;
 <div class="question" data-q="q5">
 <div class="q-label"><span class="q-num">Q5</span>How did you first hear about EBS?<span class="q-required">*</span></div>
 <div class="radio-group">
-<div class="radio-pill"><input type="radio" name="q5" id="q5a" value="Referral" required><label for="q5a">Referral from colleague or alumni</label></div>
+<div class="radio-pill"><input type="radio" name="q5" id="q5a" value="Referral-peer" required><label for="q5a">Referral from colleague or peer</label></div>
+<div class="radio-pill"><input type="radio" name="q5" id="q5a2" value="Referral-alumni"><label for="q5a2">Referral from EBS alumni / graduate</label></div>
 <div class="radio-pill"><input type="radio" name="q5" id="q5b" value="Search"><label for="q5b">Online search</label></div>
 <div class="radio-pill"><input type="radio" name="q5" id="q5c" value="Social media"><label for="q5c">Social media</label></div>
 <div class="radio-pill"><input type="radio" name="q5" id="q5d" value="EBS rep"><label for="q5d">EBS representative</label></div>
@@ -769,9 +851,9 @@ animation:flashWarn .5s ease;
 </div>
 
 <div class="question" data-q="q22">
-<div class="q-label"><span class="q-num">Q22</span>Have you experienced any career advancement since enrolling at EBS?<span class="q-required">*</span></div>
+<div class="q-label"><span class="q-num">Q22</span>Have you experienced any career advancement since enrolling at EBS?</div>
 <div class="radio-group">
-<div class="radio-pill"><input type="radio" name="q22" id="q22a" value="Promoted/raise" required><label for="q22a">Yes — promoted or salary increase</label></div>
+<div class="radio-pill"><input type="radio" name="q22" id="q22a" value="Promoted/raise"><label for="q22a">Yes — promoted or salary increase</label></div>
 <div class="radio-pill"><input type="radio" name="q22" id="q22b" value="New role"><label for="q22b">Yes — new role or career transition</label></div>
 <div class="radio-pill"><input type="radio" name="q22" id="q22c" value="Exploring"><label for="q22c">Not yet, but actively exploring</label></div>
 <div class="radio-pill"><input type="radio" name="q22" id="q22d" value="No change"><label for="q22d">No change observed to date</label></div>
@@ -810,53 +892,64 @@ animation:flashWarn .5s ease;
 <div class="section-body">
 
 <div class="question" data-q="q25">
-<div class="q-label"><span class="q-num">Q25</span>Overall, how satisfied are you with your experience at Eaton Business School?</div>
+<div class="q-label"><span class="q-num">Q25</span>How would you rate your experience at the Rome graduation ceremony?</div>
 <div class="likert">
-<div class="likert-opt"><input type="radio" name="q25" id="q25_1" value="1"><label for="q25_1"><span class="likert-num">1</span><span class="likert-label">Very Dissatisfied</span></label></div>
-<div class="likert-opt"><input type="radio" name="q25" id="q25_2" value="2"><label for="q25_2"><span class="likert-num">2</span><span class="likert-label">Dissatisfied</span></label></div>
-<div class="likert-opt"><input type="radio" name="q25" id="q25_3" value="3"><label for="q25_3"><span class="likert-num">3</span><span class="likert-label">Neutral</span></label></div>
-<div class="likert-opt"><input type="radio" name="q25" id="q25_4" value="4"><label for="q25_4"><span class="likert-num">4</span><span class="likert-label">Satisfied</span></label></div>
-<div class="likert-opt"><input type="radio" name="q25" id="q25_5" value="5"><label for="q25_5"><span class="likert-num">5</span><span class="likert-label">Very Satisfied</span></label></div>
+<div class="likert-opt"><input type="radio" name="q25" id="q25_1" value="1"><label for="q25_1"><span class="likert-num">1</span><span class="likert-label">Very Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q25" id="q25_2" value="2"><label for="q25_2"><span class="likert-num">2</span><span class="likert-label">Poor</span></label></div>
+<div class="likert-opt"><input type="radio" name="q25" id="q25_3" value="3"><label for="q25_3"><span class="likert-num">3</span><span class="likert-label">Average</span></label></div>
+<div class="likert-opt"><input type="radio" name="q25" id="q25_4" value="4"><label for="q25_4"><span class="likert-num">4</span><span class="likert-label">Good</span></label></div>
+<div class="likert-opt"><input type="radio" name="q25" id="q25_5" value="5"><label for="q25_5"><span class="likert-num">5</span><span class="likert-label">Excellent</span></label></div>
 </div>
 </div>
 
 <div class="question" data-q="q26">
-<div class="q-label"><span class="q-num">Q26</span>The programme represented good value for the investment of time and money.</div>
+<div class="q-label"><span class="q-num">Q26</span>Overall, how satisfied are you with your experience at Eaton Business School?</div>
 <div class="likert">
-<div class="likert-opt"><input type="radio" name="q26" id="q26_1" value="1"><label for="q26_1"><span class="likert-num">1</span><span class="likert-label">Strongly Disagree</span></label></div>
-<div class="likert-opt"><input type="radio" name="q26" id="q26_2" value="2"><label for="q26_2"><span class="likert-num">2</span><span class="likert-label">Disagree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q26" id="q26_1" value="1"><label for="q26_1"><span class="likert-num">1</span><span class="likert-label">Very Dissatisfied</span></label></div>
+<div class="likert-opt"><input type="radio" name="q26" id="q26_2" value="2"><label for="q26_2"><span class="likert-num">2</span><span class="likert-label">Dissatisfied</span></label></div>
 <div class="likert-opt"><input type="radio" name="q26" id="q26_3" value="3"><label for="q26_3"><span class="likert-num">3</span><span class="likert-label">Neutral</span></label></div>
-<div class="likert-opt"><input type="radio" name="q26" id="q26_4" value="4"><label for="q26_4"><span class="likert-num">4</span><span class="likert-label">Agree</span></label></div>
-<div class="likert-opt"><input type="radio" name="q26" id="q26_5" value="5"><label for="q26_5"><span class="likert-num">5</span><span class="likert-label">Strongly Agree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q26" id="q26_4" value="4"><label for="q26_4"><span class="likert-num">4</span><span class="likert-label">Satisfied</span></label></div>
+<div class="likert-opt"><input type="radio" name="q26" id="q26_5" value="5"><label for="q26_5"><span class="likert-num">5</span><span class="likert-label">Very Satisfied</span></label></div>
 </div>
 </div>
 
 <div class="question" data-q="q27">
-<div class="q-label"><span class="q-num">Q27</span>On a scale of 0 to 10, how likely are you to recommend EBS to a colleague or professional peer?</div>
+<div class="q-label"><span class="q-num">Q27</span>The programme represented good value for the investment of time and money.</div>
+<div class="likert">
+<div class="likert-opt"><input type="radio" name="q27" id="q27_1" value="1"><label for="q27_1"><span class="likert-num">1</span><span class="likert-label">Strongly Disagree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q27" id="q27_2" value="2"><label for="q27_2"><span class="likert-num">2</span><span class="likert-label">Disagree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q27" id="q27_3" value="3"><label for="q27_3"><span class="likert-num">3</span><span class="likert-label">Neutral</span></label></div>
+<div class="likert-opt"><input type="radio" name="q27" id="q27_4" value="4"><label for="q27_4"><span class="likert-num">4</span><span class="likert-label">Agree</span></label></div>
+<div class="likert-opt"><input type="radio" name="q27" id="q27_5" value="5"><label for="q27_5"><span class="likert-num">5</span><span class="likert-label">Strongly Agree</span></label></div>
+</div>
+</div>
+
+<div class="question" data-q="q28">
+<div class="q-label"><span class="q-num">Q28</span>On a scale of 0 to 10, how likely are you to recommend EBS to a colleague or professional peer?</div>
 <div class="nps-row">
-<div class="nps-opt"><input type="radio" name="q27" id="q27_0" value="0"><label for="q27_0">0</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_1" value="1"><label for="q27_1">1</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_2" value="2"><label for="q27_2">2</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_3" value="3"><label for="q27_3">3</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_4" value="4"><label for="q27_4">4</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_5" value="5"><label for="q27_5">5</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_6" value="6"><label for="q27_6">6</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_7" value="7"><label for="q27_7">7</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_8" value="8"><label for="q27_8">8</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_9" value="9"><label for="q27_9">9</label></div>
-<div class="nps-opt"><input type="radio" name="q27" id="q27_10" value="10"><label for="q27_10">10</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_0" value="0"><label for="q28_0">0</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_1" value="1"><label for="q28_1">1</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_2" value="2"><label for="q28_2">2</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_3" value="3"><label for="q28_3">3</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_4" value="4"><label for="q28_4">4</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_5" value="5"><label for="q28_5">5</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_6" value="6"><label for="q28_6">6</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_7" value="7"><label for="q28_7">7</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_8" value="8"><label for="q28_8">8</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_9" value="9"><label for="q28_9">9</label></div>
+<div class="nps-opt"><input type="radio" name="q28" id="q28_10" value="10"><label for="q28_10">10</label></div>
 </div>
 <div class="nps-anchors"><span>Not at all likely</span><span>Extremely likely</span></div>
 </div>
 
-<div class="question" data-q="q28">
-<div class="q-label"><span class="q-num">Q28</span>What is the single greatest strength of Eaton Business School?</div>
-<textarea name="q28" class="text-input" rows="3" placeholder="Share your thoughts..."></textarea>
+<div class="question" data-q="q29">
+<div class="q-label"><span class="q-num">Q29</span>What is the single greatest strength of Eaton Business School?</div>
+<textarea name="q29" class="text-input" rows="3" placeholder="Share your thoughts..."></textarea>
 </div>
 
-<div class="question" data-q="q29">
-<div class="q-label"><span class="q-num">Q29</span>What is the single most important area for improvement?</div>
-<textarea name="q29" class="text-input" rows="3" placeholder="Share your thoughts..."></textarea>
+<div class="question" data-q="q30">
+<div class="q-label"><span class="q-num">Q30</span>What is the single most important area for improvement?</div>
+<textarea name="q30" class="text-input" rows="3" placeholder="Share your thoughts..."></textarea>
 </div>
 
 <div class="question" data-q="consent">
@@ -883,9 +976,28 @@ animation:flashWarn .5s ease;
 <!-- THANK YOU -->
 <div class="thankyou" id="thankyou">
 <div class="thankyou-icon">&#10003;</div>
-<h2>Thank You</h2>
-<p>Your feedback has been recorded. It will directly inform the continuous improvement of EBS programmes and services.</p>
-<p style="margin-top:1rem;font-size:.82rem;color:var(--gold)">Eaton Business School — Rome Graduation 2026</p>
+<h2>With gratitude</h2>
+<p>Thank you for taking the time. Your reflections are read carefully — they genuinely shape how we grow, what we keep, and what we work to improve.</p>
+
+<div class="referral-block">
+<div class="referral-intro">One more thought — if you&rsquo;d like</div>
+<p class="referral-body">If someone in your circle &mdash; a colleague, a friend, someone quietly considering what&rsquo;s next &mdash; might find meaning in a journey like yours, we&rsquo;d welcome the chance to meet them. Not a pitch. Just a conversation.</p>
+
+<form id="referralForm" class="referral-form" novalidate>
+<input type="text" name="ref_name" class="text-input" placeholder="Their name" autocomplete="off">
+<input type="email" name="ref_email" class="text-input" placeholder="Their email" autocomplete="off">
+<input type="tel" name="ref_phone" class="text-input" placeholder="WhatsApp number with country code (e.g. +971 50 123 4567)" autocomplete="off">
+<div class="ref-program-label">Programme of interest</div>
+<div class="radio-group">
+<div class="radio-pill"><input type="radio" name="ref_program" id="ref_emba" value="Executive MBA"><label for="ref_emba">Executive MBA</label></div>
+<div class="radio-pill"><input type="radio" name="ref_program" id="ref_dba" value="DBA"><label for="ref_dba">DBA</label></div>
+</div>
+<button type="submit" class="referral-btn" id="refBtn">Share with EBS</button>
+<div id="refFeedback"></div>
+</form>
+</div>
+
+<div class="thankyou-footer">Eaton Business School &mdash; Rome Graduation 2026</div>
 </div>
 
 <script>
@@ -928,7 +1040,7 @@ form.addEventListener('input', updateProgress);
 
 // ── CUSTOM VALIDATION ──
 function validateRequired(){
-  const required = ['q1','q2','q3','q4','q5','q22'];
+  const required = ['q1','q2','q3','q4','q5'];
   let firstError = null;
 
   // Clear previous errors
@@ -1041,6 +1153,8 @@ async function handleSubmit(e){
 function showSuccess(){
   form.style.display = 'none';
   document.querySelector('.progress-wrap').style.display = 'none';
+  const headerSub = document.querySelector('.header-sub');
+  if(headerSub) headerSub.style.display = 'none';
   document.getElementById('thankyou').classList.add('show');
   window.scrollTo({top:0,behavior:'smooth'});
 }
@@ -1049,6 +1163,79 @@ function resetButton(){
   submitBtn.disabled = false;
   btnText.textContent = 'Submit Survey';
   submitBtn.querySelector('svg').style.display = '';
+}
+
+// ═══════════════════════════════════════════════════════
+//  REFERRAL FORM HANDLER
+// ═══════════════════════════════════════════════════════
+const referralForm = document.getElementById('referralForm');
+if(referralForm){
+  referralForm.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const refBtn = document.getElementById('refBtn');
+    const refFeedback = document.getElementById('refFeedback');
+
+    const fd = new FormData(referralForm);
+    const refData = {
+      type: 'referral',
+      ref_name: (fd.get('ref_name') || '').trim(),
+      ref_email: (fd.get('ref_email') || '').trim(),
+      ref_phone: (fd.get('ref_phone') || '').trim(),
+      ref_program: fd.get('ref_program') || '',
+      timestamp: new Date().toISOString()
+    };
+
+    refFeedback.innerHTML = '';
+
+    // Light validation
+    if(!refData.ref_name || !refData.ref_email){
+      refFeedback.innerHTML = '<div class="ref-feedback error">Please share their name and email.</div>';
+      return;
+    }
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(refData.ref_email)){
+      refFeedback.innerHTML = '<div class="ref-feedback error">That email address doesn\'t look right. Please check it.</div>';
+      return;
+    }
+    if(!refData.ref_program){
+      refFeedback.innerHTML = '<div class="ref-feedback error">Please select a programme they might be interested in.</div>';
+      return;
+    }
+
+    refBtn.disabled = true;
+    refBtn.textContent = 'Sending…';
+
+    // Demo mode — bulletproof pattern match, see note on main handler
+    if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf('script.google.com/macros/') === -1){
+      console.log('Referral (demo mode — URL not configured):', JSON.stringify(refData, null, 2));
+      setTimeout(() => {
+        referralForm.style.display = 'none';
+        refFeedback.innerHTML = '<div class="ref-feedback success">Thank you. We\'ll reach out to them thoughtfully.</div>';
+      }, 600);
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams();
+      Object.keys(refData).forEach(key => params.append(key, refData[key]));
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        body: params,
+        redirect: 'follow'
+      });
+      const result = await response.json();
+      if(result && result.result === 'success'){
+        referralForm.style.display = 'none';
+        refFeedback.innerHTML = '<div class="ref-feedback success">Thank you. We\'ll reach out to them thoughtfully.</div>';
+      } else {
+        throw new Error((result && result.message) || 'Server did not confirm success');
+      }
+    } catch(err) {
+      console.error('Referral submission error:', err);
+      refBtn.disabled = false;
+      refBtn.textContent = 'Share with EBS';
+      refFeedback.innerHTML = '<div class="ref-feedback error">Something went wrong. Please try again.</div>';
+    }
+  });
 }
 </script>
 </body>
