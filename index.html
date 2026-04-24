@@ -440,6 +440,87 @@ letter-spacing:.05em;
 text-transform:uppercase;
 font-weight:500;
 }
+
+/* ── MULTI-REFERRAL BLOCKS ── */
+.referral-block-item{
+position:relative;
+background:rgba(11,29,58,.02);
+border:1px solid var(--border);
+border-radius:10px;
+padding:1rem .9rem .85rem;
+margin-bottom:.7rem;
+animation:fadeUp .3s ease;
+}
+.referral-block-item.fade-out{
+opacity:0;
+transform:translateY(-6px);
+transition:opacity .25s ease,transform .25s ease;
+}
+.ref-item-number{
+display:inline-block;
+font-size:.68rem;
+font-weight:600;
+color:var(--gold);
+background:rgba(200,168,78,.12);
+padding:.2rem .55rem;
+border-radius:4px;
+letter-spacing:.06em;
+text-transform:uppercase;
+margin-bottom:.65rem;
+}
+.remove-referral-btn{
+position:absolute;
+top:.55rem;
+right:.55rem;
+background:transparent;
+border:1px solid transparent;
+color:var(--text-light);
+cursor:pointer;
+width:28px;height:28px;
+border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+transition:all .2s ease;
+padding:0;
+}
+.remove-referral-btn:hover{
+background:rgba(192,57,43,.08);
+color:var(--red);
+border-color:rgba(192,57,43,.2);
+}
+.remove-referral-btn svg{width:14px;height:14px}
+.referral-block-item .text-input{margin-bottom:.55rem}
+.referral-block-item .text-input:last-of-type{margin-bottom:0}
+.referral-block-item .ref-program-label{margin-top:.75rem;margin-bottom:.45rem;font-size:.68rem}
+.referral-block-item .radio-group{gap:.4rem;justify-content:center}
+.referral-block-item .radio-pill label{font-size:.78rem;padding:.4rem .85rem}
+
+/* Add-another button */
+.add-referral-btn{
+display:inline-flex;align-items:center;gap:.4rem;
+background:transparent;
+color:var(--navy);
+border:1.5px dashed rgba(11,29,58,.25);
+padding:.65rem 1.2rem;
+font-family:'Source Sans 3',sans-serif;
+font-size:.85rem;
+font-weight:500;
+border-radius:8px;
+cursor:pointer;
+margin:.5rem auto 1.1rem;
+transition:all .2s ease;
+}
+.add-referral-btn:hover{
+border-color:var(--gold);
+color:var(--gold);
+background:rgba(200,168,78,.04);
+}
+.add-referral-btn:disabled{opacity:.5;cursor:not-allowed}
+.add-referral-btn svg{width:14px;height:14px}
+
+@media(max-width:600px){
+.referral-block-item{padding:.9rem .75rem .75rem}
+.add-referral-btn{width:100%;justify-content:center}
+}
 .referral-btn{
 background:var(--navy);
 color:var(--gold);
@@ -1059,19 +1140,19 @@ Your survey responses are <strong>anonymous</strong>. The referral details below
 </div>
 
 <form id="referralForm" class="referral-form" novalidate>
-<div class="ref-section-label">Your name</div>
+<div class="ref-section-label">Your name (so we can thank you)</div>
 <input type="text" name="referrer_name" class="text-input" placeholder="Your name (optional)" autocomplete="off">
 
 <div class="ref-section-label">Who would you like to refer?</div>
-<input type="text" name="ref_name" class="text-input" placeholder="Their name" autocomplete="off">
-<input type="email" name="ref_email" class="text-input" placeholder="Their email" autocomplete="off">
-<input type="tel" name="ref_phone" class="text-input" placeholder="WhatsApp number with country code (e.g. +971 50 123 4567)" autocomplete="off">
-
-<div class="ref-program-label">Programme of interest</div>
-<div class="radio-group">
-<div class="radio-pill"><input type="radio" name="ref_program" id="ref_emba" value="Executive MBA"><label for="ref_emba">Executive MBA</label></div>
-<div class="radio-pill"><input type="radio" name="ref_program" id="ref_dba" value="DBA"><label for="ref_dba">DBA</label></div>
+<div id="referralsContainer">
+<!-- Referral blocks injected here by JS -->
 </div>
+
+<button type="button" class="add-referral-btn" id="addReferralBtn">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+Add another person
+</button>
+
 <button type="submit" class="referral-btn" id="refBtn">Share with EBS</button>
 <div id="refFeedback"></div>
 </form>
@@ -1248,73 +1329,193 @@ function resetButton(){
 // ═══════════════════════════════════════════════════════
 //  REFERRAL FORM HANDLER
 // ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+//  MULTI-REFERRAL HANDLING
+// ═══════════════════════════════════════════════════════
+const MAX_REFERRALS = 10;
+const referralsContainer = document.getElementById('referralsContainer');
+const addReferralBtn = document.getElementById('addReferralBtn');
 const referralForm = document.getElementById('referralForm');
+let referralCounter = 0;
+
+function buildReferralBlock(idx, removable){
+  const block = document.createElement('div');
+  block.className = 'referral-block-item';
+  block.dataset.idx = idx;
+  block.innerHTML = `
+    <span class="ref-item-number">Person ${idx}</span>
+    ${removable ? `<button type="button" class="remove-referral-btn" aria-label="Remove this person" title="Remove">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>` : ''}
+    <input type="text" name="ref_name_${idx}" class="text-input" placeholder="Their name" autocomplete="off">
+    <input type="email" name="ref_email_${idx}" class="text-input" placeholder="Their email" autocomplete="off">
+    <input type="tel" name="ref_phone_${idx}" class="text-input" placeholder="WhatsApp number with country code (e.g. +971 50 123 4567)" autocomplete="off">
+    <div class="ref-program-label">Programme of interest</div>
+    <div class="radio-group">
+      <div class="radio-pill"><input type="radio" name="ref_program_${idx}" id="ref_emba_${idx}" value="Executive MBA"><label for="ref_emba_${idx}">Executive MBA</label></div>
+      <div class="radio-pill"><input type="radio" name="ref_program_${idx}" id="ref_dba_${idx}" value="DBA"><label for="ref_dba_${idx}">DBA</label></div>
+    </div>
+  `;
+  if(removable){
+    block.querySelector('.remove-referral-btn').addEventListener('click', function(){
+      block.classList.add('fade-out');
+      setTimeout(() => {
+        block.remove();
+        renumberReferralBlocks();
+        addReferralBtn.disabled = false;
+      }, 250);
+    });
+  }
+  return block;
+}
+
+function renumberReferralBlocks(){
+  const blocks = referralsContainer.querySelectorAll('.referral-block-item');
+  blocks.forEach((b, i) => {
+    const num = i + 1;
+    const lbl = b.querySelector('.ref-item-number');
+    if(lbl) lbl.textContent = 'Person ' + num;
+  });
+}
+
+if(addReferralBtn && referralsContainer){
+  // Start with one non-removable block
+  referralCounter = 1;
+  referralsContainer.appendChild(buildReferralBlock(1, false));
+
+  addReferralBtn.addEventListener('click', function(){
+    const current = referralsContainer.querySelectorAll('.referral-block-item').length;
+    if(current >= MAX_REFERRALS){
+      addReferralBtn.disabled = true;
+      return;
+    }
+    referralCounter++;
+    referralsContainer.appendChild(buildReferralBlock(referralCounter, true));
+    renumberReferralBlocks();
+    if(current + 1 >= MAX_REFERRALS) addReferralBtn.disabled = true;
+  });
+}
+
 if(referralForm){
   referralForm.addEventListener('submit', async function(e){
     e.preventDefault();
     const refBtn = document.getElementById('refBtn');
     const refFeedback = document.getElementById('refFeedback');
-
-    const fd = new FormData(referralForm);
-    const refData = {
-      type: 'referral',
-      referrer_name: (fd.get('referrer_name') || '').trim(),
-      ref_name: (fd.get('ref_name') || '').trim(),
-      ref_email: (fd.get('ref_email') || '').trim(),
-      ref_phone: (fd.get('ref_phone') || '').trim(),
-      ref_program: fd.get('ref_program') || '',
-      timestamp: new Date().toISOString()
-    };
-
     refFeedback.innerHTML = '';
 
-    // Light validation
-    if(!refData.ref_name || !refData.ref_email){
-      refFeedback.innerHTML = '<div class="ref-feedback error">Please share their name and email.</div>';
+    const referrerName = (referralForm.querySelector('[name="referrer_name"]').value || '').trim();
+
+    // Collect every referral block the user filled in
+    const blocks = referralsContainer.querySelectorAll('.referral-block-item');
+    const referrals = [];
+    const errors = [];
+
+    blocks.forEach((block, i) => {
+      const idx = block.dataset.idx;
+      const name  = (block.querySelector('[name="ref_name_'+idx+'"]').value || '').trim();
+      const email = (block.querySelector('[name="ref_email_'+idx+'"]').value || '').trim();
+      const phone = (block.querySelector('[name="ref_phone_'+idx+'"]').value || '').trim();
+      const programInput = block.querySelector('[name="ref_program_'+idx+'"]:checked');
+      const program = programInput ? programInput.value : '';
+
+      // Skip blocks that are completely empty (except the first one, which we always validate)
+      const isEmpty = !name && !email && !phone && !program;
+      if(isEmpty && i > 0) return;
+
+      const personLabel = 'Person ' + (i + 1);
+      if(!name || !email){
+        errors.push(personLabel + ': name and email are required');
+        return;
+      }
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+        errors.push(personLabel + ': email address doesn\'t look right');
+        return;
+      }
+      if(!program){
+        errors.push(personLabel + ': please select a programme of interest');
+        return;
+      }
+
+      referrals.push({ name, email, phone, program });
+    });
+
+    if(errors.length){
+      refFeedback.innerHTML = '<div class="ref-feedback error">' + errors.join('<br>') + '</div>';
       return;
     }
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(refData.ref_email)){
-      refFeedback.innerHTML = '<div class="ref-feedback error">That email address doesn\'t look right. Please check it.</div>';
-      return;
-    }
-    if(!refData.ref_program){
-      refFeedback.innerHTML = '<div class="ref-feedback error">Please select a programme they might be interested in.</div>';
+    if(referrals.length === 0){
+      refFeedback.innerHTML = '<div class="ref-feedback error">Please share at least one person\'s details.</div>';
       return;
     }
 
     refBtn.disabled = true;
-    refBtn.textContent = 'Sending…';
+    addReferralBtn.disabled = true;
+    refBtn.textContent = referrals.length > 1 ? `Sending ${referrals.length}…` : 'Sending…';
 
-    // Demo mode — bulletproof pattern match, see note on main handler
+    // Demo mode
     if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf('script.google.com/macros/') === -1){
-      console.log('Referral (demo mode — URL not configured):', JSON.stringify(refData, null, 2));
+      console.log('Referrals (demo mode):', referrals.map((r, i) => ({ idx: i+1, referrer_name: referrerName, ...r })));
       setTimeout(() => {
         referralForm.style.display = 'none';
-        refFeedback.innerHTML = '<div class="ref-feedback success">Thank you. We\'ll reach out to them thoughtfully.</div>';
+        const msg = referrals.length > 1
+          ? `Thank you. We\'ll reach out to all ${referrals.length} of them thoughtfully.`
+          : 'Thank you. We\'ll reach out to them thoughtfully.';
+        refFeedback.innerHTML = '<div class="ref-feedback success">' + msg + '</div>';
       }, 600);
       return;
     }
 
-    try {
-      const params = new URLSearchParams();
-      Object.keys(refData).forEach(key => params.append(key, refData[key]));
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
-        method: 'POST',
-        body: params,
-        redirect: 'follow'
-      });
-      const result = await response.json();
-      if(result && result.result === 'success'){
-        referralForm.style.display = 'none';
-        refFeedback.innerHTML = '<div class="ref-feedback success">Thank you. We\'ll reach out to them thoughtfully.</div>';
-      } else {
-        throw new Error((result && result.message) || 'Server did not confirm success');
+    // Send each referral as its own row — more robust: if one fails,
+    // we know exactly which one, and the others still land.
+    let succeeded = 0;
+    const failed = [];
+    for(let i = 0; i < referrals.length; i++){
+      const r = referrals[i];
+      const payload = {
+        type: 'referral',
+        referrer_name: referrerName,
+        ref_name: r.name,
+        ref_email: r.email,
+        ref_phone: r.phone,
+        ref_program: r.program,
+        timestamp: new Date().toISOString()
+      };
+      try {
+        const params = new URLSearchParams();
+        Object.keys(payload).forEach(k => params.append(k, payload[k]));
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          body: params,
+          redirect: 'follow'
+        });
+        const result = await response.json();
+        if(result && result.result === 'success'){
+          succeeded++;
+        } else {
+          failed.push('Person ' + (i + 1));
+        }
+      } catch(err) {
+        console.error('Referral submission error for person ' + (i + 1) + ':', err);
+        failed.push('Person ' + (i + 1));
       }
-    } catch(err) {
-      console.error('Referral submission error:', err);
+    }
+
+    if(succeeded === referrals.length){
+      referralForm.style.display = 'none';
+      const msg = succeeded > 1
+        ? 'Thank you. We\'ll reach out to all ' + succeeded + ' of them thoughtfully.'
+        : 'Thank you. We\'ll reach out to them thoughtfully.';
+      refFeedback.innerHTML = '<div class="ref-feedback success">' + msg + '</div>';
+    } else if(succeeded > 0){
+      refFeedback.innerHTML = '<div class="ref-feedback error">' + succeeded + ' of ' + referrals.length + ' referrals were saved. These did not go through: ' + failed.join(', ') + '. Please try again for those.</div>';
       refBtn.disabled = false;
-      refBtn.textContent = 'Share with EBS';
+      addReferralBtn.disabled = false;
+      refBtn.textContent = 'Retry';
+    } else {
       refFeedback.innerHTML = '<div class="ref-feedback error">Something went wrong. Please try again.</div>';
+      refBtn.disabled = false;
+      addReferralBtn.disabled = false;
+      refBtn.textContent = 'Share with EBS';
     }
   });
 }
